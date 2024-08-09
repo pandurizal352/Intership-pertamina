@@ -1,0 +1,104 @@
+.dashboard {
+  display: flex;
+  font-family: Arial, sans-serif;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #2d3a45;
+  color: white;
+  padding: 20px;
+}
+
+.profile {
+  text-align: center;
+}
+
+.profile img {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+
+.profile h2 {
+  margin: 10px 0;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+nav ul li {
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background-color 0.3s;
+}
+
+nav ul li.active, nav ul li:hover {
+  background-color: #1f2a36;
+  border-radius: 8px;
+}
+
+.active-users {
+  margin-top: 20px;
+}
+
+.active-users .users {
+  display: flex;
+  align-items: center;
+}
+
+.active-users .users img {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.active-users .users span {
+  color: #ffc107;
+  font-size: 1.2em;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.flights-info, .last-trips, .statistics, .flights-share, .flights-schedule {
+  margin-bottom: 20px;
+}
+
+.flights-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flight, .total-flights {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 30%;
+}
+
+.last-trips table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.last-trips th, .last-trips td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.chart, .pie-chart, .line-chart {
+  background-color: #f5f5f5;
+  height: 200px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

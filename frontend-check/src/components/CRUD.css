@@ -1,0 +1,464 @@
+/* keseluruhan */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.action-button-detail {
+  color: #8A2BE2;
+}
+
+.action-button-edit {
+  color: #FFD700;
+}
+
+.action-button-hapus {
+  color: #800000 ;
+}
+
+
+.action-buttons button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  transition: color 0.3s ease;
+}
+
+.action-buttons button:hover {
+  color: #ddd;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Make sure the modal is on top of other content */
+}
+
+/* Modal content */
+.modal {
+  position: relative;
+  width: 80%;
+  max-width: 800px; /* Adjusted for better fit */
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-height: 80vh; /* Adjust height as needed */
+  overflow-y: auto; /* Enable scrolling */
+}
+
+/* Close button in the modal */
+.modal .close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #aaa;
+  transition: color 0.3s ease;
+}
+
+.modal .close-button:hover {
+  color: #333;
+}
+
+/* Form styling */
+.modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Space between form fields */
+}
+
+.modal label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.modal input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%; /* Make inputs fill the width */
+  box-sizing: border-box; /* Ensure padding and border are included in width */
+}
+
+.modal button {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  color: white;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  align-self: flex-start; /* Align buttons to the left */
+}
+
+
+
+/* Adjusted form buttons container */
+.modal-buttons {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+  justify-content: flex-end; /* Align buttons to the right */
+}
+
+/* Submit button styling */
+.modal-submit-button {
+  background-color: #a7bf01;
+  color: white;
+}
+
+/* Close button styling */
+.modal-close-button {
+  background-color: #f44336; /* Red color */
+  color: white;
+}
+
+.modal-close-button:hover {
+  background-color: #d32f2f;
+}
+
+
+/* Add a close button */
+.add-data-button {
+  display: inline-block;
+  background-color: #a7bf01;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.add-data-button:hover {
+  background-color: #a7bf01;
+}
+
+
+
+
+/* CSS CRUD pemeriksaan */
+.pemeriksaan {
+  padding: 20px;
+}
+
+.add-data-button {
+  display: block;
+  margin: 10px 0;
+  padding: 10px 20px;
+  font-size: 16px;
+ 
+
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-data-button:hover {
+  background-color: #a7bf01;
+}
+
+.input-group {
+  display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 80px; 
+  
+}
+
+.input-group .form-control {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px 0 0 5px;
+  
+}
+
+.input-group .search-button {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-left: none;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: #E5CDA7;
+}
+
+.input-group .search-button:hover {
+  background-color: #ddd;
+}
+
+.input-group .export-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.input-group .pdf-button {
+  background-color: #ec000e;
+  color: white;
+}
+
+.input-group .pdf-button:hover {
+  background-color: #ec000e;
+}
+
+.input-group .excel-button {
+  background-color: #a7bf01;
+  color: white;
+}
+
+.input-group .excel-button:hover {
+  background-color: #45a049;
+}
+
+.pemeriksaan table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pemeriksaan th, .pemeriksaan td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center;
+}
+
+.pemeriksaan th {
+  background-color: #ec000e;
+}
+
+
+
+
+  /* CSS CRUD Perusahaan */
+
+  .perusahaan {
+    padding: 20px;
+  }
+  
+  .add-data-button {
+    display: block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #a7bf01;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-data-button:hover {
+    background-color: #45a049;
+  }
+  
+  .input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .input-group .form-control {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+  }
+  
+  .input-group .search-button {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-left: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 80px; /* Set a fixed width */
+    background-color: #E5CDA7; /* Change button color */
+  }
+  
+  .input-group .search-button:hover {
+    background-color: #d4b891; /* Slightly darker shade for hover */
+  }
+  
+  .perusahaan table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .perusahaan th, .perusahaan td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .perusahaan th {
+    background-color: #ec000e;
+  }
+  
+
+  /* CSS Crud petugas */
+
+  
+  .petugas {
+    padding: 20px;
+  }
+  
+  .add-data-button {
+    display: block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #a7bf01;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-data-button:hover {
+    background-color: #45a049;
+  }
+  
+  .input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .input-group .form-control {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+  }
+  
+  .input-group .search-button {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-left: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 80px; /* Set a fixed width */
+    background-color: #E5CDA7; /* Change button color */
+  }
+  
+  .input-group .search-button:hover {
+    background-color: #d4b891; /* Slightly darker shade for hover */
+  }
+  
+  .petugas table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .petugas th, .petugas td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .petugas th {
+    background-color: #ec000e;
+  }
+  
+
+
+  /* CSS Crud sopir */
+
+  .sopir {
+    padding: 20px;
+  }
+  
+  .add-data-button {
+    display: block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #a7bf01;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-data-button:hover {
+    background-color: #45a049;
+  }
+  
+  .input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .input-group .form-control {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+  }
+  
+  .input-group .search-button {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-left: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 80px; /* Set a fixed width */
+    background-color: #E5CDA7; /* Change button color */
+  }
+  
+  .input-group .search-button:hover {
+    background-color: #d4b891; /* Slightly darker shade for hover */
+  }
+  
+  .sopir table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .sopir th, .sopir td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .sopir th {
+    background-color: #ec000e;
+  }
+  

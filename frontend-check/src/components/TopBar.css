@@ -1,0 +1,35 @@
+/* components/TopBar.css */
+
+.topbar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.7); /* Transparan dengan background */
+    color: #fff;
+    padding: 10px 20px;
+    height: 50px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+  
+  .sidebar-toggle {
+    background-color: #ec000e;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 50px;
+    padding: 10px 20px;
+    transition: left 0.3s ease-in-out;
+    position: fixed; /* Menjadikan posisi fixed */
+    top: 10px;
+    left: 260px; /* Menempatkan di luar sidebar */
+    z-index: 1001; /* Lebih tinggi dari sidebar */
+  }
+  
+  .sidebar-toggle.closed {
+    left: 10px; /* Posisi tombol saat sidebar ditutup */
+  }
+  
