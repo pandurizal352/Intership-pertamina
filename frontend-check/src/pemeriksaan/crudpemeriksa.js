@@ -129,7 +129,7 @@ const Pemeriksaan = () => {
       <table>
         <thead>
           <tr>
-            <th>ID Perusahaan</th>
+            <th>Nama petugas</th>
             <th>ID Petugas</th>
             <th>ID Sopir</th>
             <th>Tanggal Pemeriksaan</th>

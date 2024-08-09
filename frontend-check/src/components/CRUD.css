@@ -249,7 +249,9 @@
 
 .pemeriksaan th {
   background-color: #ec000e;
+  color: #ffffff;
 }
+
 
 
 
@@ -320,6 +322,7 @@
   
   .perusahaan th {
     background-color: #ec000e;
+    color: #ffffff;
   }
   
 
@@ -390,6 +393,7 @@
   
   .petugas th {
     background-color: #ec000e;
+    color: #ffffff;
   }
   
 
@@ -460,5 +464,6 @@
   
   .sopir th {
     background-color: #ec000e;
+    color: #ffffff;
   }
   
