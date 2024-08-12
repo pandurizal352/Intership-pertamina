@@ -44,3 +44,39 @@
 .content.shrink {
   margin-left: 250px; /* Menambahkan margin saat sidebar terbuka */
 }
+
+
+/* baru */
+
+a{
+  margin: 10px;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.card{
+  background-color:#45a049;
+}
+
+.services{
+  width: 90%;
+  margin: 50px auto;
+  padding-bottom: 80px;
+
+}
+
+.subtext{
+  color:white;
+  font-size: 15px;
+}
+
+.kontak{
+  width: 100%;
+  background-color: #f4f4f4 ;
+}
+
+.kontak_container{
+  margin: 20px auto;
+  width: 90%;
+  
+}
