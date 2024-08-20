@@ -4,9 +4,9 @@ import { FaArrowRightLong } from "react-icons/fa6";
 
 const Hero = () => {
     return (
-        <div className='flex flex-col md:flex-row w-[90%] items-center py-5 px-6 gap-8 h-full my-9 mx-auto'>
+        <div className='flex flex-col md:flex-row w-[90%] items-center py-5 px-6 gap-8 h-full mx-auto -mt-12'>
             {/* Left side: Text section */}
-            <div className='flex-1  md:text-left'>
+            <div className='flex-1 md:text-left'>
                 <h1 className='font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl mt-5 leading-tight'>
                     Let's go join<br />
                 </h1>

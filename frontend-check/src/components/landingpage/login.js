@@ -29,6 +29,9 @@ const Login = () => {
                 <button className="w-full bg-[#45a049] text-white py-2 rounded-md hover:bg-indigo-700 transition duration-300 ease-in-out">
                     Login
                 </button>
+                <p className="text-center text-gray-600 mt-4">
+                    Belum memiliki akun? <a href="/register" className="text-indigo-600 hover:underline">Register</a>
+                </p>
             </div>
 
             {/* Right side: Image section */}

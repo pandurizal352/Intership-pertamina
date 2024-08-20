@@ -1,6 +1,8 @@
 // components/TopBar.js
 import React from 'react';
-import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
+import { SlArrowLeft, SlArrowRight, SlArrowDown } from 'react-icons/sl';
+import { FaBars } from 'react-icons/fa';
+
 import './TopBar.css';
 
 const TopBar = ({ sidebarOpen, toggleSidebar }) => {
