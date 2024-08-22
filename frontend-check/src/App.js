@@ -8,6 +8,7 @@ import CrudPerusahaan from './perusahaan/crudPerusahaan';
 
 import Crudpetugas from './petugas/crudpetugas';
 import Crudsopir from './sopir/crudsopir';
+import Modal from 'react-modal';
 
 
 
@@ -16,9 +17,11 @@ import './App.css';
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeComponent, setActiveComponent] = useState('dashboard');
-
+  Modal.setAppElement('#root');
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
+
+    
   };
 
   const renderComponent = () => {
