@@ -1,31 +1,25 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Sidebar from './components/sidebar';
-
 import Dashboard from './components/Dashboard';
-
 import Crudpemeriksaan from './pemeriksaan/crudpemeriksa';
 import CrudPerusahaan from './perusahaan/crudPerusahaan';
 import Crudpetugas from './petugas/crudpetugas';
 import Crudsopir from './sopir/crudsopir';
-
 import Navbar from './components/landingpage/navbar';
 import Hero from './components/landingpage/hero';
 import Servis from './components/landingpage/servis';
 import Kontak from './components/landingpage/kontak';
 import Footer from './components/landingpage/footer';
-
 import Login from './components/landingpage/login';
 import Register from './components/landingpage/register';
-
 import './App.css';
-
 function App() {
   const [activeComponent, setActiveComponent] = useState('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const toggleSidebar = (status) => {
-    setIsSidebarOpen(status);
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
   const renderComponent = () => {
@@ -98,15 +92,22 @@ function App() {
             path="/admin/*"
             element={
               <>
+                <button
+                  className="toggle-sidebar-button"
+                  onClick={toggleSidebar}
+                  style={{
+                    left: isSidebarOpen ? '250px' : '15px',
+                  }}
+                >
+                  ☰
+                </button>
                 <div className="main-container">
                   <div className={`sidebar-container ${isSidebarOpen ? 'open' : ''}`}>
                     <Sidebar
                       setActiveComponent={setActiveComponent}
-                      toggleSidebar={toggleSidebar}
-                      isSidebarOpen={isSidebarOpen}
                     />
                   </div>
-                  <div className={`content ${isSidebarOpen ? 'shrink' : ''}`}>
+                  <div className="content">
                     {renderComponent()}
                   </div>
                 </div>
@@ -118,6 +119,7 @@ function App() {
     </Router>
   );
 }
+
 
 export default App;
 

@@ -1,4 +1,3 @@
-/* Global and App styling */
 .App {
   display: flex;
   flex-direction: column;
@@ -8,6 +7,7 @@
 .main-container {
   display: flex;
   flex-grow: 1;
+  margin-top: 60px; /* Beri ruang untuk topbar */
 }
 
 .sidebar-container {
@@ -17,7 +17,7 @@
   width: 250px;
   height: 100%;
   transition: transform 0.3s ease-in-out;
-  transform: translateX(-100%);
+  transform: translateX(0);
   z-index: 1000;
 }
 
@@ -25,60 +25,84 @@
   transform: translateX(0);
 }
 
+.sidebar-container:not(.open) {
+  transform: translateX(-100%);
+}
+
 .content {
   flex-grow: 1;
   padding: 20px;
+  transition: margin-left 0.3s ease-in-out;
   margin-left: 0;
   overflow-y: auto;
-  margin-top: 60px; /* Beri ruang untuk topbar */
-  transition: margin-left 0.3s ease-in-out;
+  margin-top: 10px; /* Beri ruang untuk topbar */
 }
 
 .content.shrink {
-  margin-left: 250px; /* Tambahkan margin saat sidebar terbuka */
+  margin-left: 250px; /* Menambahkan margin saat sidebar terbuka */
 }
 
-/* Styles for toggle button */
-.sidebar-toggle {
-  display: none; /* Default tersembunyi */
+/* Tombol toggle sidebar */
+.toggle-sidebar-button {
+  display: block;
+  position: fixed;
+  top: 15px;
+  left: 250px; /* Posisi default saat sidebar terbuka */
+  z-index: 1100;
+  cursor: pointer;
+  background: #025fa4;
+  margin: 5px;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  transition: left 0.3s ease-in-out;
 }
 
-/* Responsiveness adjustments */
+/* Tombol toggle saat sidebar ditutup */
+.sidebar-container:not(.open) ~ .toggle-sidebar-button {
+  left: 15px; /* Pojok kiri saat sidebar tertutup */
+}
+
+/* Responsif untuk layar kecil */
 @media screen and (max-width: 768px) {
-  .sidebar-container {
-    width: 200px;
+  .toggle-sidebar-button {
+    left: 15px; /* Tetap di pojok kiri pada layar kecil */
   }
 
-  .content.shrink {
-    margin-left: 200px;
-  }
-
-  .sidebar-toggle {
-    display: block;
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 1100;
-    background-color: #025fa4;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    font-size: 18px;
+  .sidebar.open ~ .toggle-sidebar-button {
+    left: 5px; /* Tetap di pojok kiri meski sidebar terbuka pada layar kecil */
   }
 }
 
-@media screen and (max-width: 480px) {
-  .sidebar-container {
-    width: 150px;
-  }
+/* Gaya tambahan */
+a {
+  margin: 10px;
+  text-transform: capitalize;
+  font-weight: 500;
+}
 
-  .content.shrink {
-    margin-left: 150px;
-  }
+.card {
+  background-color: #45a049;
+}
 
-  .sidebar-toggle {
-    font-size: 16px;
-    padding: 8px;
-  }
+.services {
+  width: 90%;
+  margin: 50px auto;
+  padding-bottom: 80px;
+}
+
+.subtext {
+  color: white;
+  font-size: 15px;
+}
+
+.kontak {
+  width: 100%;
+  background-color: #f4f4f4;
+}
+
+.kontak_container {
+  margin: 20px auto;
+  width: 90%;
 }

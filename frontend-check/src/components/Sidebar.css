@@ -1,3 +1,4 @@
+/* Sidebar dan konten utama */
 .sidebar {
   width: 250px;
   height: 100%;
@@ -11,11 +12,8 @@
   left: 0;
   z-index: 1000;
   transform: translateX(0); /* Sidebar tetap terlihat */
-  transition: none; /* Hilangkan transisi karena sidebar tidak akan berubah */
+  transition: transform 0.3s ease-in-out; /* Animasi untuk sidebar */
 }
-
-
-
 
 .sidebar-header {
   padding: 20px;
@@ -54,7 +52,7 @@
   position: absolute;
   right: 0;
   top: 0;
-  width: 0px;
+  width: 5px;
   height: 100%;
   background-color: #1A1A40;
 }
@@ -74,60 +72,60 @@
   flex-grow: 1;
 }
 
-.menu-item-chevron {
-  margin-left: auto;
-}
-
 .sidebar-footer {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   padding: 20px;
 }
 
+/* Konten */
 .content {
   margin-left: 250px; /* Sesuaikan dengan lebar sidebar */
   padding: 20px;
   transition: margin-left 0.3s ease-in-out; /* Animasi untuk perubahan margin */
 }
 
-.main-container {
-  display: flex;
-}
-
-/* Tambahan CSS untuk Responsivitas */
+/* Responsif untuk layar kecil */
 @media screen and (max-width: 768px) {
+  .sidebar {
+    width: 200px; /* Lebar sidebar lebih kecil untuk layar kecil */
+  }
+
   .content {
     margin-left: 200px; /* Sesuaikan dengan lebar sidebar untuk layar kecil */
   }
 }
 
 @media screen and (max-width: 480px) {
-  .content {
-    margin-left: 150px; /* Lebih kecil lagi untuk layar sangat kecil */
-  }
-}
-
-
-@media screen and (max-width: 480px) {
   .sidebar {
-    width: 150px; /* Lebih kecil lagi untuk layar sangat kecil */
+    width: 150px; /* Lebar sidebar lebih kecil untuk layar sangat kecil */
+    position: absolute; /* Mengubah posisi sidebar menjadi absolute */
+    transform: translateX(-100%); /* Sidebar tersembunyi secara default */
   }
 
-  .sidebar-menu li {
-    padding: 8px 10px; /* Padding lebih kecil untuk layar kecil */
+  .sidebar.open {
+    transform: translateX(0); /* Menampilkan sidebar jika terbuka */
   }
 
-  .sidebar-menu li.active,
-  .sidebar-menu li:hover {
-    border-top-left-radius: 15px; /* Sesuaikan lagi untuk layar kecil */
-    border-bottom-left-radius: 15px; /* Sesuaikan lagi untuk layar kecil */
+  .content {
+    margin-left: 0; /* Tidak ada margin untuk layar sangat kecil */
   }
 
-  .sidebar-header h2 {
-    font-size: 18px; /* Ukuran font lebih kecil */
+  /* Menambahkan tombol untuk toggle sidebar di perangkat kecil */
+  .toggle-sidebar-button {
+    display: block; /* Menampilkan tombol untuk toggle sidebar */
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1100;
+    cursor: pointer;
+    background: #025fa4;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
   }
 }
-
 
 
 
