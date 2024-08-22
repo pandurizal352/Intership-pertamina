@@ -1,56 +1,41 @@
+var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var cors = require('cors');
-const bodyParser = require('body-parser'); // Menambahkan middleware body-parser
 
-// Mengimpor router dari masing-masing route
-const usercheck = require('./routes/users');
-const sopircheck = require('./routes/sopir');
-const perusahaancheck = require('./routes/perusahaan');
-const petugascheck = require('./routes/petugas');
-var authRouter = require('./routes/auth');
-const test = require('./routes/screentest');
-// const pemeriksaanRouter = require('./routes/Pemeriksaan');
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
 
 var app = express();
-const PORT = process.env.PORT || 5000; // Mendefinisikan PORT
-const HOST = process.env.HOST || 'localhost'; // Mendefinisikan HOST
 
-// Middleware CORS untuk mengizinkan permintaan dari domain lain
-app.use(cors({
-  origin: 'http://localhost:3000', // Gantilah ini dengan domain frontend Anda jika berbeda
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Metode HTTP yang diizinkan
-  allowedHeaders: ['Content-Type', 'Authorization'], // Header yang diizinkan
-  credentials: true // Jika Anda memerlukan pengelolaan kredensial seperti cookies
-}));
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.json()); // Middleware untuk parsing body dari request menjadi JSON
 
-// Menggunakan router dari setiap route yang telah diimpor
-app.use('/auth', authRouter);
-app.use('/sopir', sopircheck);
-app.use('/perusahaan', perusahaancheck);
-app.use('/petugas', petugascheck);
-app.use('/test', test);
-// app.use('/pemeriksaan', pemeriksaanRouter);
-app.use('/user', usercheck);
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 
-// Penanganan error global untuk keseluruhan aplikasi
-app.use((err, req, res, next) => {
-    console.error('Global error handler:', err.message);
-    res.status(500).json({ error: 'Something went wrong' });
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
 });
 
-// Mendaftarkan aplikasi Express untuk mendengarkan permintaan pada PORT tertentu
-app.listen(PORT, HOST, () => {
-    console.log(`Pertamini listening on "http://${HOST}:${PORT}"`);
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
 });
 
 module.exports = app;
