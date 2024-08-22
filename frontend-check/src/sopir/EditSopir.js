@@ -1,11 +1,11 @@
 import React from 'react';
 import Modal from 'react-modal';
-import './AddDataModal.css'; // Pastikan file CSS ini ada di direktori yang sama
+import '../components/AddDataModal.css';
 
 // Set the app element to avoid accessibility issues
 Modal.setAppElement('#root');
 
-const EditPerusahaan = ({ isOpen, onRequestClose, formData, onChange, onSubmit }) => {
+const EditSopir = ({ isOpen, onRequestClose, formData, onChange, onSubmit }) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -17,12 +17,11 @@ const EditPerusahaan = ({ isOpen, onRequestClose, formData, onChange, onSubmit }
       <h2>Tambah Data</h2>
       <form onSubmit={onSubmit}>
      
-         <label>Tanggal cek fisik:</label>
-        <input type="date"name="regu_name" value={formData.tanggal_cek_fisik} onChange={onChange} required />
-        <label>Nomor polisi:</label>
-        <input type="text"name="regu_name" value={formData.nomor_polisi} onChange={onChange} required />
-        <label>Nama perusahaan:</label>
-        <input type="text"name="regu_name" value={formData.nama_perusahaan}onChange={onChange} required />
+        
+        <label>Nama sopir:</label>
+        <input type="text"name="regu_name" value={formData.nama_sopir} onChange={onChange} required />
+        <label>Nama LO:</label>
+        <input type="text"name="regu_name" value={formData.nama_LO}onChange={onChange} required />
 
 
         <div className="modal-buttons">
@@ -34,4 +33,4 @@ const EditPerusahaan = ({ isOpen, onRequestClose, formData, onChange, onSubmit }
   );
 };
 
-export default EditPerusahaan;
+export default EditSopir;

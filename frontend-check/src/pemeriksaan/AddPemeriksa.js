@@ -36,62 +36,7 @@ const AddPemeriksa = ({ isOpen, onRequestClose, formData, onChange, onSubmit, da
         <label>REGU:</label>
         <input type="text" name="percentTepung" value={localFormData.percentTepung} onChange={handleChange} required />
 
-        <label>LINE:</label>
-        <input type="text" name="percentTepung" value={localFormData.percentTepung} onChange={handleChange} required />
-        <label>SACHET:</label>
-        <input type="text" name="percentTepung" value={localFormData.percentTepung} onChange={handleChange} required />
-
-        <label>VAR Tepung:</label>
-        <input type="text" name="varTepung" value={localFormData.varTepung} onChange={handleChange} required />
-        
-        <label>percent tepung %:</label>
-        <input type="text" name="percentTepung" value={localFormData.percentTepung} onChange={handleChange} required />
-        
-        <label>NILAI tepung:</label>
-        <input type="text" name="nilaiTepung" value={localFormData.nilaiTepung} readOnly required />
-        
-        <label>VAR MG:</label>
-        <input type="text" name="varMg" value={localFormData.varMg} onChange={handleChange} required />
-        
-        <label>percent mg%:</label>
-        <input type="text" name="percentMg" value={localFormData.percentMg} onChange={handleChange} required />
-        
-        <label>NILAI MG:</label>
-        <input type="text" name="nilaiMg" value={localFormData.nilaiMg} readOnly required />
-        
-        <label>VAR Bumbu:</label>
-        <input type="text" name="varBumbu" value={localFormData.varBumbu} onChange={handleChange} required />
-        
-        <label>percent bumbu%:</label>
-        <input type="text" name="percentBumbu" value={localFormData.percentBumbu} onChange={handleChange} required />
-        
-        <label>NILAI Bumbu:</label>
-        <input type="text" name="nilaiBumbu" value={localFormData.nilaiBumbu} readOnly required />
-        
-        <label>VAR Minyak Bumbu:</label>
-        <input type="text" name="varMinyakBumbu" value={localFormData.varMinyakBumbu} onChange={handleChange} required />
-        
-        <label>percent minyak bumbu %:</label>
-        <input type="text" name="percentMinyakBumbu" value={localFormData.percentMinyakBumbu} onChange={handleChange} required />
-        
-        <label>NILAI Minyak Bumbu:</label>
-        <input type="text" name="nilaiMinyakBumbu" value={localFormData.nilaiMinyakBumbu} readOnly required />
-        
-        <label>VAR Karton:</label>
-        <input type="text" name="varKarton" value={localFormData.varKarton} onChange={handleChange} required />
-        
-        <label>percent karton %:</label>
-        <input type="text" name="percentKarton" value={localFormData.percentKarton} onChange={handleChange} required />
-        
-        <label>VAR Solid Inggridien:</label>
-        <input type="text" name="varSolidInggridien" value={localFormData.varSolidInggridien} onChange={handleChange} required />
-        
-        <label>percent Solid Inggridien %:</label>
-        <input type="text" name="percentSolidInggridien" value={localFormData.percentSolidInggridien} onChange={handleChange} required />
-        
-        <label>NILAI Solid Inggridien:</label>
-        <input type="text" name="nilaiSolidInggridien" value={localFormData.nilaiSolidInggridien} readOnly required />
-        
+       
         <div className="modal-buttons">
           <button type="submit" className="modal-submit-button">Submit</button>
           <button type="button" className="modal-close-button" onClick={onRequestClose}>Close</button>

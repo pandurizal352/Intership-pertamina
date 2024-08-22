@@ -1,11 +1,11 @@
 import React from 'react';
 import Modal from 'react-modal';
-import './AddDataModal.css'; // Pastikan file CSS ini ada di direktori yang sama
+import '../components/AddDataModal.css';
 
 // Set the app element to avoid accessibility issues
 Modal.setAppElement('#root');
 
-const EditPerusahaan = ({ isOpen, onRequestClose, formData, onChange, onSubmit }) => {
+const EditPetugas = ({ isOpen, onRequestClose, formData, onChange, onSubmit }) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -34,4 +34,4 @@ const EditPerusahaan = ({ isOpen, onRequestClose, formData, onChange, onSubmit }
   );
 };
 
-export default EditPerusahaan;
+export default EditPetugas;
