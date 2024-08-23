@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Tambahkan useEffect di sini
 import Modal from 'react-modal';
 import { FaRegEdit, FaRegTrashAlt, FaInfoCircle } from 'react-icons/fa';
 import Addsopir from './Addsopir'; // Pastikan path impor benar
@@ -14,6 +14,30 @@ const Crudsopir = () => {
     nama_sopir: '',
     nomer_LO: '',
   });
+
+  const [sopirList, setSopirList] = useState([]); // State untuk menyimpan data sopir
+  const [loading, setLoading] = useState(true); // State untuk indikasi loading
+
+  // Menampilkan Data
+  // Fetch data sopir dari API saat komponen pertama kali di-render
+  useEffect(() => {
+    const fetchSopirData = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/sopir');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setSopirList(data); // Simpan data sopir ke dalam state
+        setLoading(false); // Set loading menjadi false setelah data berhasil diambil
+      } catch (error) {
+        console.error('Error fetching sopir data:', error);
+        setLoading(false); // Set loading menjadi false jika terjadi error
+      }
+    };
+
+    fetchSopirData();
+  }, []); // Kosong [] agar hanya dijalankan sekali saat komponen mount
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -34,18 +58,18 @@ const Crudsopir = () => {
     // Implementasikan logika ekspor Excel di sini
   };
 
-  const handleDetailClick = () => {
-    console.log('Detail clicked');
+  const handleDetailClick = (sopir) => {
+    console.log('Detail clicked for:', sopir);
     // Implementasikan logika detail di sini
   };
 
-  const handleEditClick = () => {
-    console.log('Edit clicked');
+  const handleEditClick = (sopir) => {
+    console.log('Edit clicked for:', sopir);
     // Implementasikan logika edit di sini
   };
 
-  const handleDeleteClick = () => {
-    console.log('Delete clicked');
+  const handleDeleteClick = (sopir) => {
+    console.log('Delete clicked for:', sopir);
     // Implementasikan logika hapus di sini
   };
 
@@ -59,14 +83,34 @@ const Crudsopir = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ 
+      ...formData, 
+      [name]: name === 'nomer_LO' ? parseInt(value, 10) : value // Konversi ke integer untuk nomer_LO
+    });
   };
 
-  const handleSubmit = (event) => {
+  // Mengirim data ke database
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Form Data:', formData);
-    // Implementasikan logika pengiriman form di sini
-    closeModal();
+    try {
+      const response = await fetch('http://localhost:5000/sopir', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData), // Mengirim data form sebagai JSON
+      });
+
+      if (!response.ok) {
+        throw new Error('Error adding data');
+      }
+
+      const newSopir = await response.json();
+      setSopirList((prevSopirList) => [...prevSopirList, newSopir]); // Tambahkan data sopir baru ke state
+      closeModal();
+    } catch (error) {
+      console.error('Error adding data:', error);
+    }
   };
 
   return (
@@ -108,29 +152,34 @@ const Crudsopir = () => {
         </button>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Nama Sopir</th>
-            <th>Nomer LO</th>
-            <th>ACTION</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Contoh Nama</td>
-            <td>Contoh Nomer LO</td>
-            <td>
-              <div className="action-buttons">
-                <button className="action-button-detail" onClick={handleDetailClick}><FaInfoCircle />detail</button>
-                <button className="action-button-edit" onClick={handleEditClick}><FaRegEdit />edit</button>
-                <button className="action-button-hapus" onClick={handleDeleteClick}><FaRegTrashAlt />hapus</button>
-              </div>
-            </td>
-          </tr>
-          {/* Tambahkan baris data sesuai kebutuhan */}
-        </tbody>
-      </table>
+      {loading ? (
+        <p>Loading...</p> // Menampilkan loading jika data sedang diambil
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Nama Sopir</th>
+              <th>Nomer LO</th>
+              <th>ACTION</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sopirList.map((sopir) => (
+              <tr key={sopir.id_sopir}>
+                <td>{sopir.nama_sopir}</td>
+                <td>{sopir.nomer_LO}</td>
+                <td>
+                  <div className="action-buttons">
+                    <button className="action-button-detail" onClick={() => handleDetailClick(sopir)}><FaInfoCircle />detail</button>
+                    <button className="action-button-edit" onClick={() => handleEditClick(sopir)}><FaRegEdit />edit</button>
+                    <button className="action-button-hapus" onClick={() => handleDeleteClick(sopir)}><FaRegTrashAlt />hapus</button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
 
       <Addsopir
         isOpen={modalIsOpen}
