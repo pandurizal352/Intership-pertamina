@@ -16,9 +16,9 @@ const Kontak = () => {
                     {[...Array(4)].map((_, index) => (
                         <div key={index} className='py-5 px-5 bg-white shadow-lg'>
                             <img src="" className="w-[100px] h-[100px] rounded-lg shadow-xl mb-5" alt="foto-profile"/>
-                            <h1 className='font-bold text-xl'>Kata kata mutiara atau nasihat dari orang perusahaan</h1>
+                            <h1 className='font-bold text-xl'>Jr. Supervisor Quality & Quantitiy</h1>
                             <span className='font-semibold text-[10px] my-5' style={{ color:"gray", marginTop:"25px" }}>
-                                Nama panggilan orang-perusahaan
+                                Nama panggilan orang-perusahaan  Supervisor / 
                             </span>
                         </div>
                     ))}
