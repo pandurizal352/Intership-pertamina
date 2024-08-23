@@ -1,21 +1,64 @@
-/* components/TopBar.css */
+/* Topbar.css */
 
+.topbar {
+  display: flex;
+  align-items: center;
+  background-color: #025fa4;
+  color: #fff;
+  padding: 15px 20px;
+  position: fixed;
+  top: 0;
+  left: 250px; /* Mulai dari sebelah kanan sidebar */
+  right: 0;
+  z-index: 1000;
+  transition: left 0.3s ease; /* Animasi untuk perubahan posisi */
+}
+
+.topbar.shrink {
+  left: 0; /* Geser topbar saat sidebar tertutup */
+}
+
+.topbar-title {
+  margin: 0;
+  font-size: 20px;
+  margin-left: 20px;
+}
+
+.toggle-sidebar-button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  position: absolute;
+  left: -50px; /* Posisikan tombol di sebelah kanan sidebar */
+}
+
+.toggle-sidebar-button:hover {
+  background-color: #1a1a40;
+}
+
+
+/* 
 .topbar {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     background-color: rgba(255, 255, 255, 0.7); /* Transparan dengan background */
-    color: #fff;
+    /* color: #fff;
     padding: 10px 20px;
     height: 50px;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000;
-  }
+    z-index: 1000;  */
+  /* } */
   
-  .sidebar-toggle {
+  /* .sidebar-toggle {
     background-color: #ec000e;
     color: #fff;
     border: none;
@@ -24,12 +67,12 @@
     padding: 10px 20px;
     transition: left 0.3s ease-in-out;
     position: fixed; /* Menjadikan posisi fixed */
-    top: 10px;
+    /* top: 10px;
     left: 260px; /* Menempatkan di luar sidebar */
-    z-index: 1001; /* Lebih tinggi dari sidebar */
-  }
+    /* z-index: 1001; Lebih tinggi dari sidebar */ 
+  /* } */ 
   
-  .sidebar-toggle.closed {
+  /* .sidebar-toggle.closed {
     left: 10px; /* Posisi tombol saat sidebar ditutup */
-  }
+  /* } */
   

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { FaRegEdit, FaRegTrashAlt, FaInfoCircle } from 'react-icons/fa';
 import AddPemeriksa from './AddPemeriksa'; // Pastikan jalur impor benar

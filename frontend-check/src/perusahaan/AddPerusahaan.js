@@ -15,14 +15,12 @@ const AddPerusahaan = ({ isOpen, onRequestClose, formData, onChange, onSubmit })
     >
       <h2>Tambah Data</h2>
       <form onSubmit={onSubmit}>
-        <label>Nama Regu:</label>
-        <input
-          type="text"
-          name="regu_name"
-          value={formData.regu_name}
-          onChange={onChange}
-          required
-        />
+        <label>Tanggal cek fisi:</label>
+        <input type="date"name="regu_name" value={formData.regu_name}onChange={onChange} required />
+        <label>Nomor polisi:</label>
+        <input type="text"name="regu_name" value={formData.regu_name}onChange={onChange} required />
+        <label>Nama perusahaan:</label>
+        <input type="text"name="regu_name" value={formData.regu_name}onChange={onChange} required />
         
         <div className="modal-buttons">
           <button type="submit" className="modal-submit-button">Submit</button>

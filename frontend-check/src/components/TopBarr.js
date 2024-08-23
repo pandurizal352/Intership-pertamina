@@ -1,19 +1,16 @@
-// components/TopBar.js
 import React from 'react';
-import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
+import { FaBars } from 'react-icons/fa';
 import './TopBar.css';
 
-const TopBar = ({ sidebarOpen, toggleSidebar }) => {
+const Topbar = ({ isSidebarOpen, toggleSidebar }) => {
   return (
-    <div className="topbar">
-      <button
-        className={`sidebar-toggle ${!sidebarOpen ? 'closed' : ''}`}
-        onClick={toggleSidebar}
-      >
-        {sidebarOpen ? <SlArrowLeft /> : <SlArrowRight />}
+    <div className={`topbar ${isSidebarOpen ? '' : 'shrink'}`}>
+      <button className="toggle-sidebar-button" onClick={() => toggleSidebar(!isSidebarOpen)}>
+        <FaBars />
       </button>
+      <h2 className="topbar-title">Intership Pertamina</h2>
     </div>
   );
 };
 
-export default TopBar;
+export default Topbar;

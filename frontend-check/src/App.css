@@ -4,9 +4,6 @@
   height: 100vh;
 }
 
-
-
-
 .main-container {
   display: flex;
   flex-grow: 1;
@@ -43,4 +40,69 @@
 
 .content.shrink {
   margin-left: 250px; /* Menambahkan margin saat sidebar terbuka */
+}
+
+/* Tombol toggle sidebar */
+.toggle-sidebar-button {
+  display: block;
+  position: fixed;
+  top: 15px;
+  left: 250px; /* Posisi default saat sidebar terbuka */
+  z-index: 1100;
+  cursor: pointer;
+  background: #025fa4;
+  margin: 5px;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  transition: left 0.3s ease-in-out;
+}
+
+/* Tombol toggle saat sidebar ditutup */
+.sidebar-container:not(.open) ~ .toggle-sidebar-button {
+  left: 15px; /* Pojok kiri saat sidebar tertutup */
+}
+
+/* Responsif untuk layar kecil */
+@media screen and (max-width: 768px) {
+  .toggle-sidebar-button {
+    left: 15px; /* Tetap di pojok kiri pada layar kecil */
+  }
+
+  .sidebar.open ~ .toggle-sidebar-button {
+    left: 5px; /* Tetap di pojok kiri meski sidebar terbuka pada layar kecil */
+  }
+}
+
+/* Gaya tambahan */
+a {
+  margin: 10px;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.card {
+  background-color: #45a049;
+}
+
+.services {
+  width: 90%;
+  margin: 50px auto;
+  padding-bottom: 80px;
+}
+
+.subtext {
+  color: white;
+  font-size: 15px;
+}
+
+.kontak {
+  width: 100%;
+  background-color: #f4f4f4;
+}
+
+.kontak_container {
+  margin: 20px auto;
+  width: 90%;
 }
