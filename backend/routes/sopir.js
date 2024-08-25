@@ -32,20 +32,29 @@ router.get('/', async (req, res) => {
 });
 
 // Ambil detail sopir berdasarkan ID
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
+router.get('/search', async (req, res) => {
+  const { nama } = req.query; // Mengambil parameter query 'nama'
 
   try {
-    const sopir = await prisma.sopir.findUnique({
-      where: { id_sopir: Number(id) }
+    console.log(`Mencari sopir dengan nama: ${nama}`);
+
+    // Mencari sopir yang sesuai dengan nama yang diberikan
+    const sopir = await prisma.sopir.findMany({
+      where: {
+        nama_sopir: {
+          contains: nama // Menggunakan 'contains' untuk pencarian yang lebih fleksibel
+        }
+      }
     });
-    if (sopir) {
-      res.json(sopir);
+
+    if (sopir.length > 0) {
+      res.json(sopir); // Mengembalikan daftar sopir yang sesuai
     } else {
       res.status(404).json({ error: 'Sopir not found' });
     }
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching data' });
+    console.error('Error fetching data:', error);
+    res.status(500).json({ error: 'Error fetching data', details: error.message });
   }
 });
 
