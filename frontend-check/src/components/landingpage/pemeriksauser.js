@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 
 
-const PeriksaUser = () => {
+// const PeriksaUser = () => {
     
 
-    return (
-        <div>
-            <h1>pemeriksaan</h1>
-        </div>
-    );
-}
+//     return (
+//         <div>
+//             <h1>pemeriksaan</h1>
+//         </div>
+//     );
+// }
 
-export default  PeriksaUser;
+// export default  PeriksaUser;
