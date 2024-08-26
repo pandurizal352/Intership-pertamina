@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { jsPDF } from 'jspdf';
 import Modal from 'react-modal';
 import { FaRegEdit, FaRegTrashAlt, FaInfoCircle } from 'react-icons/fa';
 import Addpetugas from './AddPetugas'; // Pastikan path impor benar
+import ConfirmDeleteModal from './ConfirmDelete'; // Import modal konfirmasi hapus
+import DetailPetugasModal from './Detail'; // Import modal detail
 import '../components/CRUD.css';
 
 // Setel elemen aplikasi untuk menghindari masalah aksesibilitas
@@ -10,15 +13,18 @@ Modal.setAppElement('#root');
 const Crudpetugas = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [confirmDeleteIsOpen, setConfirmDeleteIsOpen] = useState(false); 
+  const [detailModalIsOpen, setDetailModalIsOpen] = useState(false); 
   const [formData, setFormData] = useState({
-    nomor_petugas: '',
     nama_petugas: '',
+    nomor_petugas: '',
   });
+  const [editMode, setEditMode] = useState(false); 
+  const [currentPetugasId, setCurrentPetugasId] = useState(null); 
+  const [petugasList, setPetugasList] = useState([]); 
+  const [loading, setLoading] = useState(true); 
+  const [selectedPetugas, setSelectedPetugas] = useState(null); 
 
-  const [petugasList, setSopirList] = useState([]); // State untuk menyimpan data petugas
-  const [loading, setLoading] = useState(true); // State untuk indikasi loading
-
-  // Menampilkan Data
   useEffect(() => {
     const fetchPetugasData = async () => {
       try {
@@ -27,29 +33,133 @@ const Crudpetugas = () => {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        setSopirList(data); // Simpan data petugas ke dalam state
-        setLoading(false); // Set loading menjadi false setelah data berhasil diambil
+        setPetugasList(data); 
+        setLoading(false); 
       } catch (error) {
         console.error('Error fetching petugas data:', error);
-        setLoading(false); // Set loading menjadi false jika terjadi error
+        setLoading(false); 
       }
     };
 
     fetchPetugasData();
-  }, []); // Kosong [] agar hanya dijalankan sekali saat komponen mount
+  }, []); 
 
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
+  const handleSearchChange = async (event) => {
+    const newSearchTerm = event.target.value;
+    setSearchTerm(newSearchTerm);
+
+    if (newSearchTerm.trim() === '') {
+      try {
+        const response = await fetch('http://localhost:5000/petugas');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setPetugasList(data); 
+      } catch (error) {
+        console.error('Error fetching petugas data:', error);
+      }
+    } else {
+      try {
+        const response = await fetch(`http://localhost:5000/petugas/search?nama=${encodeURIComponent(newSearchTerm)}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setPetugasList(data); 
+        console.log('Search result:', data);
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+      }
+    }
   };
 
-  const handleSearchClick = () => {
-    console.log('Search term:', searchTerm);
-    // Implementasikan logika pencarian di sini
+  const handleSearchClick = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/petugas/search?nama=${encodeURIComponent(searchTerm)}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setPetugasList(data); 
+      console.log('Search result:', data);
+    } catch (error) {
+      console.error('Error fetching search results:', error);
+    }
   };
 
   const handlePdfExport = () => {
-    console.log('PDF Export');
-    // Implementasikan logika ekspor PDF di sini
+    // Base64 string dari gambar logo Pertamina
+    const logoBase64 = ''; // Ganti dengan Base64 string gambar Pertamina yang telah didapatkan
+  
+    const pdf = new jsPDF('p', 'mm', 'a4');
+  
+    // Ukuran halaman A4: 210mm x 297mm
+    const pageWidth = pdf.internal.pageSize.getWidth();
+  
+    // Set margins
+    const marginTop = 20;
+  
+    // Ukuran kolom
+    const columnWidths = [80, 80]; // Adjust column widths
+    const totalTableWidth = columnWidths.reduce((acc, width) => acc + width, 0);
+  
+    // Hitung posisi margin kiri agar tabel berada di tengah halaman
+    const marginLeft = (pageWidth - totalTableWidth) / 2;
+  
+    // Add Pertamina logo at the top-left
+    pdf.addImage(logoBase64, 'PNG', marginLeft, marginTop, 50, 20); // Adjust size and position as needed
+  
+    // Add title text next to the logo
+    pdf.setFontSize(18);
+    pdf.text('DATA PETUGAS', marginLeft + 60, marginTop + 20);
+    pdf.setFontSize(11);
+  
+    // Move down to start the table
+    pdf.setFontSize(12);
+  
+    // Calculate table starting point
+    const tableTop = marginTop + 35;
+  
+    // Add table headers
+    const headers = ['Nama Petugas', 'Nomor Petugas'];
+    const rowHeight = 10;
+  
+    // Draw header background and add header text
+    pdf.setFillColor(220, 220, 220);
+    pdf.rect(marginLeft, tableTop, totalTableWidth, rowHeight, 'F');
+  
+    headers.forEach((header, i) => {
+      const headerX = marginLeft + (i * columnWidths[i]) + (columnWidths[i] / 2);
+      pdf.text(header, headerX, tableTop + 7, { align: 'center' });
+    });
+  
+    // Draw header bottom line
+    pdf.line(marginLeft, tableTop + rowHeight, marginLeft + totalTableWidth, tableTop + rowHeight);
+  
+    // Add table rows with centered text and border
+    let startY = tableTop + rowHeight;
+  
+    petugasList.forEach(petugas => {
+      pdf.text(petugas.nama_petugas, marginLeft + (columnWidths[0] / 2), startY + 7, { align: 'center' });
+      pdf.text(petugas.nomor_petugas.toString(), marginLeft + columnWidths[0] + (columnWidths[1] / 2), startY + 7, { align: 'center' });
+  
+      // Draw row borders
+      pdf.line(marginLeft, startY, marginLeft + totalTableWidth, startY);
+      pdf.line(marginLeft, startY + rowHeight, marginLeft + totalTableWidth, startY + rowHeight);
+      
+      startY += rowHeight; // Move to the next row
+    });
+  
+    // Draw table outer border
+    pdf.rect(marginLeft, tableTop, totalTableWidth, (petugasList.length + 1) * rowHeight, 'S');
+  
+    // Draw vertical line to separate the two columns
+    const verticalLineX = marginLeft + columnWidths[0];
+    pdf.line(verticalLineX, tableTop, verticalLineX, startY);
+  
+    // Finalize and save the PDF
+    pdf.save('checklist.pdf');
   };
 
   const handleExcelExport = () => {
@@ -58,21 +168,51 @@ const Crudpetugas = () => {
   };
 
   const handleDetailClick = (petugas) => {
-    console.log('Detail clicked for:', petugas);
-    // Implementasikan logika detail di sini
+    setSelectedPetugas(petugas); 
+    setDetailModalIsOpen(true); 
   };
 
   const handleEditClick = (petugas) => {
-    console.log('Edit clicked for:', petugas);
-    // Implementasikan logika edit di sini
+    setEditMode(true); 
+    setCurrentPetugasId(petugas.id); 
+    setFormData({
+      nama_petugas: petugas.nama_petugas,
+      nomor_petugas: petugas.nomor_petugas,
+    });
+    setModalIsOpen(true); 
   };
 
   const handleDeleteClick = (petugas) => {
-    console.log('Delete clicked for:', petugas);
-    // Implementasikan logika hapus di sini
+    setCurrentPetugasId(petugas.id); 
+    setSelectedPetugas(petugas); // Set petugas untuk ditampilkan di modal
+    setConfirmDeleteIsOpen(true); 
   };
-
+  
+  const handleConfirmDelete = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/petugas/${currentPetugasId}`, {
+        method: 'DELETE',
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error deleting data');
+      }
+  
+      setPetugasList((prevPetugasList) =>
+        prevPetugasList.filter((item) => item.id !== currentPetugasId)
+      );
+      setConfirmDeleteIsOpen(false); 
+      console.log('Delete successful for:', currentPetugasId);
+    } catch (error) {
+      console.error('Error deleting data:', error);
+    }
+  };
   const openModal = () => {
+    setEditMode(false); 
+    setFormData({
+      nama_petugas: '',
+      nomor_petugas: '',
+    });
     setModalIsOpen(true);
   };
 
@@ -84,39 +224,55 @@ const Crudpetugas = () => {
     const { name, value } = event.target;
     setFormData({ 
       ...formData, 
-      [name]: value
+      [name]: name === 'nomor_petugas' ? value : value 
     });
   };
 
-  // Mengirim data ke database
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/petugas', {
-        method: 'POST',
+      const url = editMode ? `http://localhost:5000/petugas/${currentPetugasId}` : 'http://localhost:5000/petugas';
+      const method = editMode ? 'PUT' : 'POST';
+
+      // Konversi nomor_petugas ke string
+      const dataToSend = {
+        ...formData,
+        nomor_petugas: formData.nomor_petugas.toString() 
+      };
+
+      const response = await fetch(url, {
+        method: method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(dataToSend),
       });
 
       if (!response.ok) {
-        throw new Error('Error adding data');
+        throw new Error(editMode ? 'Error updating data' : 'Error adding data');
       }
 
-      const newPetugas = await response.json();
-      setSopirList((prevSopirList) => [...prevSopirList, newPetugas]);
+      const updatedPetugas = await response.json();
+      if (editMode) {
+        setPetugasList((prevPetugasList) =>
+          prevPetugasList.map((petugas) =>
+            petugas.id === currentPetugasId ? updatedPetugas : petugas
+          )
+        );
+      } else {
+        setPetugasList((prevPetugasList) => [...prevPetugasList, updatedPetugas]);
+      }
       closeModal();
     } catch (error) {
-      console.error('Error adding data:', error);
+      console.error(editMode ? 'Error updating data:' : 'Error adding data:', error);
     }
   };
 
   return (
     <div className="petugas">
-      <h2>Manajemen Perusahaan</h2>
-      <button className="add-data-button" onClick={openModal}>Tambah Perusahaan</button>
-
+      <h2>Manajemen Petugas</h2>
+      <button className="add-data-button" onClick={openModal}>Tambah Petugas</button>
+  
       <div className="input-group mb-3">
         <input 
           type="text" 
@@ -127,6 +283,7 @@ const Crudpetugas = () => {
           value={searchTerm} 
           onChange={handleSearchChange} 
         />
+  
         <button 
           className="btn btn-outline-secondary search-button" 
           type="button" 
@@ -150,36 +307,39 @@ const Crudpetugas = () => {
           Ekstrak Excel
         </button>
       </div>
-
+  
       {loading ? (
-        <p>Loading...</p>
+        <p>Loading...</p> 
       ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>Nomor Petugas</th>
-              <th>Nama Petugas</th>
-              <th>ACTION</th>
-            </tr>
-          </thead>
-          <tbody>
-            {petugasList.map((petugas) => (
-              <tr key={petugas.nomor_petugas}>
-                <td>{petugas.nomor_petugas}</td>
-                <td>{petugas.nama_petugas}</td>
-                <td>
-                  <div className="action-buttons">
-                    <button className="action-button-detail" onClick={() => handleDetailClick(petugas)}><FaInfoCircle /> detail</button>
-                    <button className="action-button-edit" onClick={() => handleEditClick(petugas)}><FaRegEdit /> edit</button>
-                    <button className="action-button-hapus" onClick={() => handleDeleteClick(petugas)}><FaRegTrashAlt /> hapus</button>
-                  </div>
-                </td>
+        <div id="pdf-content">
+          <table>
+            <thead>
+              <tr>
+                <th>Nama Petugas</th>
+                <th>Nomor Petugas</th>
+                <th>ACTION</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {petugasList.map((petugas) => (
+                <tr key={petugas.id}>
+                  <td>{petugas.nama_petugas}</td>
+                  <td>{petugas.nomor_petugas}</td>
+                  <td>
+                    <div className="action-buttons">
+                      <button className="action-button-detail " onClick={() => handleDetailClick(petugas)}><FaInfoCircle /> detail</button>
+                      <button className="action-button-edit " onClick={() => handleEditClick(petugas)}><FaRegEdit /> edit</button>
+                      <button className="action-button-hapus " onClick={() => handleDeleteClick(petugas)}><FaRegTrashAlt /> hapus</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
-
+    
+  
       <Addpetugas
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -187,8 +347,21 @@ const Crudpetugas = () => {
         onChange={handleInputChange}
         onSubmit={handleSubmit}
       />
+  
+  <ConfirmDeleteModal
+  isOpen={confirmDeleteIsOpen}
+  onRequestClose={() => setConfirmDeleteIsOpen(false)}
+  onConfirm={handleConfirmDelete}
+  itemName={selectedPetugas ? selectedPetugas.nama_petugas : ''} // Kirim nama petugas
+/>
+  
+      <DetailPetugasModal
+        isOpen={detailModalIsOpen}
+        onRequestClose={() => setDetailModalIsOpen(false)}
+        petugasDetail={selectedPetugas}
+      />
     </div>
   );
-};
+}
 
 export default Crudpetugas;
