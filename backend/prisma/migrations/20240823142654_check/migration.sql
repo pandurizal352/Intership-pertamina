@@ -10,8 +10,33 @@ CREATE TABLE `Pemeriksaan` (
     `keterangan` VARCHAR(191) NOT NULL,
     `status` VARCHAR(191) NOT NULL,
     `foto` VARCHAR(191) NOT NULL,
+    `id_kabelListrik` INTEGER NULL,
+    `id_bateraiAccu` INTEGER NULL,
 
     PRIMARY KEY (`id_pemeriksaan`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `KabelListrik` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `semua_terisolasi` BOOLEAN NOT NULL,
+    `kondisi_konduit` BOOLEAN NOT NULL,
+    `perlindungan_kabel` BOOLEAN NOT NULL,
+    `alat_listrik_tambahan` BOOLEAN NOT NULL,
+    `pemantik_dilepas` BOOLEAN NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `BateraiAccu` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `accuBawahtanki` BOOLEAN NOT NULL,
+    `Posisiaccu` BOOLEAN NOT NULL,
+    `accuIsolator` BOOLEAN NOT NULL,
+    `bukanLogam` BOOLEAN NOT NULL,
+
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -29,11 +54,7 @@ CREATE TABLE `Petugas` (
     `id_petugas` INTEGER NOT NULL AUTO_INCREMENT,
     `nomor_petugas` VARCHAR(191) NOT NULL,
     `nama_petugas` VARCHAR(191) NOT NULL,
-    `username` VARCHAR(191) NOT NULL,
-    `password` VARCHAR(191) NOT NULL,
-    `roleId` INTEGER NOT NULL,
 
-    UNIQUE INDEX `Petugas_username_key`(`username`),
     PRIMARY KEY (`id_petugas`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -42,12 +63,19 @@ CREATE TABLE `Sopir` (
     `id_sopir` INTEGER NOT NULL AUTO_INCREMENT,
     `nama_sopir` VARCHAR(191) NOT NULL,
     `nomer_LO` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id_sopir`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `User` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `username` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
     `roleId` INTEGER NOT NULL,
 
-    UNIQUE INDEX `Sopir_username_key`(`username`),
-    PRIMARY KEY (`id_sopir`)
+    UNIQUE INDEX `User_username_key`(`username`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -68,7 +96,10 @@ ALTER TABLE `Pemeriksaan` ADD CONSTRAINT `Pemeriksaan_id_petugas_fkey` FOREIGN K
 ALTER TABLE `Pemeriksaan` ADD CONSTRAINT `Pemeriksaan_id_sopir_fkey` FOREIGN KEY (`id_sopir`) REFERENCES `Sopir`(`id_sopir`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Petugas` ADD CONSTRAINT `Petugas_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `Role`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Pemeriksaan` ADD CONSTRAINT `Pemeriksaan_id_kabelListrik_fkey` FOREIGN KEY (`id_kabelListrik`) REFERENCES `KabelListrik`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Sopir` ADD CONSTRAINT `Sopir_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `Role`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Pemeriksaan` ADD CONSTRAINT `Pemeriksaan_id_bateraiAccu_fkey` FOREIGN KEY (`id_bateraiAccu`) REFERENCES `BateraiAccu`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `User` ADD CONSTRAINT `User_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `Role`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

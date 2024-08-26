@@ -4,7 +4,7 @@ import heroimg from '../../assets/roket.png';
 
 const Register = () => {
     const [username, setUsername] = useState('');
-    const [namaperusahaan, setNamaperusahaan] = useState('');
+ 
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const navigate = useNavigate();
@@ -12,7 +12,7 @@ const Register = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
 
-        // Pastikan password dan password confirm cocok POST http://localhost:3000/api/register 404 (Not Found)
+        // Pastikan password dan password confirm cocok
         if (password !== passwordConfirm) {
             alert('Password dan konfirmasi password tidak cocok');
             return;
@@ -26,7 +26,7 @@ const Register = () => {
                 },
                 body: JSON.stringify({
                     username,
-                    namaperusahaan,
+                  
                     password,
                 }),
             });
@@ -37,7 +37,7 @@ const Register = () => {
                 alert('Registrasi berhasil! Silakan login.');
                 navigate('/login'); // Arahkan pengguna ke halaman login setelah registrasi berhasil
             } else {
-                alert(`Registrasi gagal: ${data.error || data.message}`);
+                alert(`Registrasi gagal: ${data.message}`);
             }
         } catch (error) {
             console.error('Error during registration:', error);
@@ -62,18 +62,7 @@ const Register = () => {
                             required 
                         />
                     </div>
-                    <div className="mb-4"> {/* Menambahkan margin bawah */}
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="Namaperusahaan">Nama Perusahaan:</label>
-                        <input 
-                            type="text" 
-                            id="Namaperusahaan" 
-                            name="Namaperusahaan" 
-                            value={namaperusahaan}
-                            onChange={(e) => setNamaperusahaan(e.target.value)}
-                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" 
-                            required 
-                        />
-                    </div>
+                   
                     <div className="mb-4"> {/* Menambahkan margin bawah */}
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">Password:</label>
                         <input 
@@ -115,7 +104,7 @@ const Register = () => {
                 <img 
                     src={heroimg} 
                     alt="Register" 
-                    className="w-[240px] sm:w-[300px] md:w-[400px] lg:w-[400px] xl:w-[500px]" 
+                    className="w-[240px] sm:w-[300px] md:w-[380px] lg:w-[450px] h-auto object-cover transition-transform transform hover:scale-105 duration-300 ease-in-out"
                 />
             </div>
         </div>

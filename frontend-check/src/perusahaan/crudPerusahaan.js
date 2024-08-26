@@ -1,15 +1,19 @@
-// import AddPerusahaan from './AddPerusahaan';
+
+
+
+
 import React, { useState, useEffect } from 'react';
+import Modal from 'react-modal';
 import { FaRegEdit, FaRegTrashAlt, FaInfoCircle } from 'react-icons/fa';
+import Addperusahaan from './AddPerusahaan'; // Pastikan path impor benar
 import '../components/CRUD.css';
+
+// Setel elemen aplikasi untuk menghindari masalah aksesibilitas
+Modal.setAppElement('#root');
 
 const CrudPerusahaan = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [confirmDeleteModalIsOpen, setConfirmDeleteModalIsOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState(null);
-  const [isEditMode, setIsEditMode] = useState(false);
-
   const [formData, setFormData] = useState({
     id_perusahaan: '',
     tanggal_cek_fisik: '',
@@ -17,17 +21,28 @@ const CrudPerusahaan = () => {
     nama_perusahaan: '',
   });
 
-  const [dataPerusahaan, setDataPerusahaan] = useState([]);
+  const [perusahaanList, setPerusahaanList] = useState([]); // State untuk menyimpan data perusahaan
+  const [loading, setLoading] = useState(true); // State untuk indikasi loading
 
+  // Menampilkan Data
   useEffect(() => {
-    fetch('http://localhost:5000/perusahaan')
-      .then(response => response.json())
-      .then(data => {
-        console.log('Data fetched:', data);
-        setDataPerusahaan(data);
-      })
-      .catch(error => console.error('Error fetching data:', error));
-  }, []);
+    const fetchPerusahaanData = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/perusahaan');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setPerusahaanList(data); // Simpan data perusahaan ke dalam state
+        setLoading(false); // Set loading menjadi false setelah data berhasil diambil
+      } catch (error) {
+        console.error('Error fetching perusahaan data:', error);
+        setLoading(false); // Set loading menjadi false jika terjadi error
+      }
+    };
+
+    fetchPerusahaanData();
+  }, []); // Kosong [] agar hanya dijalankan sekali saat komponen mount
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -35,152 +50,128 @@ const CrudPerusahaan = () => {
 
   const handleSearchClick = () => {
     console.log('Search term:', searchTerm);
-  };
-
-  const handleDetailClick = (id) => {
-    console.log('Detail clicked for ID:', id);
-  };
-
-  const handleEditClick = (id) => {
-    setIsEditMode(true);
-    setSelectedId(id);
-    fetch(`http://localhost:5000/Perusahaan/${id}`)
-      .then(response => response.json())
-      .then(data => {
-        setFormData(data);
-        setModalIsOpen(true);
-      })
-      .catch(error => console.error('Error fetching data:', error));
-  };
-
-  const handleDeleteClick = (id) => {
-    setSelectedId(id);
-    setConfirmDeleteModalIsOpen(true);
-  };
-
-  const confirmDelete = () => {
-    fetch(`http://localhost:5000/Perusahaan/${selectedId}`, {
-      method: 'DELETE',
-    })
-      .then(response => {
-        if (response.ok) {
-          setDataPerusahaan(dataPerusahaan.filter(perusahaan => perusahaan.id_perusahaan !== selectedId));
-        } else {
-          console.error('Error deleting data:', response);
-        }
-      })
-      .catch(error => console.error('Error:', error))
-      .finally(() => setConfirmDeleteModalIsOpen(false));
+    // Implementasikan logika pencarian di sini
   };
 
   const handlePdfExport = () => {
     console.log('PDF Export');
+    // Implementasikan logika ekspor PDF di sini
   };
 
   const handleExcelExport = () => {
     console.log('Excel Export');
+    // Implementasikan logika ekspor Excel di sini
+  };
+
+  const handleDetailClick = (perusahaan) => {
+    console.log('Detail clicked for:', perusahaan);
+    // Implementasikan logika detail di sini
+  };
+
+  const handleEditClick = (perusahaan) => {
+    console.log('Edit clicked for:', perusahaan);
+    // Implementasikan logika edit di sini
+  };
+
+  const handleDeleteClick = (perusahaan) => {
+    console.log('Delete clicked for:', perusahaan);
+    // Implementasikan logika hapus di sini
   };
 
   const openModal = () => {
-    setIsEditMode(false);
     setModalIsOpen(true);
   };
 
   const closeModal = () => {
     setModalIsOpen(false);
-    setFormData({
-      id_perusahaan: '',
-      tanggal_cek_fisik: '',
-      nomor_polisi: '',
-      nama_perusahaan: '',
-    });
   };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ 
+      ...formData, 
+      [name]: value
+    });
   };
 
-  const handleSubmit = (event) => {
+  // Mengirim data ke database
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const url = isEditMode
-      ? `http://localhost:5000/Perusahaan/${selectedId}`
-      : 'http://localhost:5000/perusahaan';
-    const method = isEditMode ? 'PUT' : 'POST';
+    try {
+      const response = await fetch('http://localhost:5000/perusahaan', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    fetch(url, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (isEditMode) {
-          setDataPerusahaan(dataPerusahaan.map(perusahaan =>
-            perusahaan.id_perusahaan === selectedId ? data : perusahaan
-          ));
-        } else {
-          setDataPerusahaan([...dataPerusahaan, data]);
-        }
-        closeModal();
-      })
-      .catch(error => console.error('Error:', error));
+      if (!response.ok) {
+        throw new Error('Error adding data');
+      }
+
+      const newPerusahaan = await response.json();
+      setPerusahaanList((prevSopirList) => [...prevSopirList, newPerusahaan]);
+      closeModal();
+    } catch (error) {
+      console.error('Error adding data:', error);
+    }
   };
 
   return (
     <div className="perusahaan">
-      <h2>CRUD Perusahaan</h2>
-      <button className="add-data-button" onClick={openModal}>Tambah data</button>
+      <h2>Manajemen Perusahaan</h2>
+      <button className="add-data-button" onClick={openModal}>Tambah Perusahaan</button>
 
       <div className="input-group mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Cari data..."
-          aria-label="Cari data"
-          aria-describedby="button-addon2"
-          value={searchTerm}
-          onChange={handleSearchChange}
+        <input 
+          type="text" 
+          className="form-control" 
+          placeholder="Cari perusahaan..." 
+          aria-label="Cari perusahaan" 
+          aria-describedby="button-addon2" 
+          value={searchTerm} 
+          onChange={handleSearchChange} 
         />
-        <button
-          className="btn btn-outline-secondary search-button"
-          type="button"
-          id="button-addon2"
+        <button 
+          className="btn btn-outline-secondary search-button" 
+          type="button" 
+          id="button-addon2" 
           onClick={handleSearchClick}
         >
           Cari
         </button>
-        <button
-          className="export-button pdf-button"
-          type="button"
+        <button 
+          className="export-button pdf-button" 
+          type="button" 
           onClick={handlePdfExport}
         >
-          Ekspor PDF
+          Ekstrak PDF
         </button>
-        <button
-          className="export-button excel-button"
-          type="button"
+        <button 
+          className="export-button excel-button" 
+          type="button" 
           onClick={handleExcelExport}
         >
-          Ekspor Excel
+          Ekstrak Excel
         </button>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>ID Perusahaan</th>
-            <th>Tanggal Cek Fisik</th>
-            <th>Nomor Polisi</th>
-            <th>Nama Perusahaan</th>
-            <th>ACTION</th>
-          </tr>
-        </thead>
-        <tbody>
-          {dataPerusahaan && dataPerusahaan.length > 0 ? (
-            dataPerusahaan.map((perusahaan) => (
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>ID Perusahaan</th>
+              <th>Tanggal Cek Fisik</th>
+              <th>Nomor Polisi</th>
+              <th>Nama Perusahaan</th>
+              <th>ACTION</th>
+            </tr>
+          </thead>
+          <tbody>
+            {perusahaanList.map((perusahaan) => (
               <tr key={perusahaan.id_perusahaan}>
                 <td>{perusahaan.id_perusahaan}</td>
                 <td>{perusahaan.tanggal_cek_fisik}</td>
@@ -188,89 +179,24 @@ const CrudPerusahaan = () => {
                 <td>{perusahaan.nama_perusahaan}</td>
                 <td>
                   <div className="action-buttons">
-                    <button className="action-button-detail" onClick={() => handleDetailClick(perusahaan.id_perusahaan)}><FaInfoCircle /> detail</button>
-                    <button className="action-button-edit" onClick={() => handleEditClick(perusahaan.id_perusahaan)}><FaRegEdit /> edit</button>
-                    <button className="action-button-hapus" onClick={() => handleDeleteClick(perusahaan.id_perusahaan)}><FaRegTrashAlt /> hapus</button>
+                    <button className="action-button-detail" onClick={() => handleDetailClick(perusahaan)}><FaInfoCircle /> detail</button>
+                    <button className="action-button-edit" onClick={() => handleEditClick(perusahaan)}><FaRegEdit /> edit</button>
+                    <button className="action-button-hapus" onClick={() => handleDeleteClick(perusahaan)}><FaRegTrashAlt /> hapus</button>
                   </div>
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="5">No data available</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-
-      {/* Modal Konfirmasi Delete */}
-      {confirmDeleteModalIsOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h3>Konfirmasi Penghapusan</h3>
-            <p>Apakah Anda yakin ingin menghapus data ini?</p>
-            <div className="modal-actions">
-              <button className="btn btn-secondary" onClick={() => setConfirmDeleteModalIsOpen(false)}>
-                Tidak
-              </button>
-              <button className="btn btn-danger" onClick={confirmDelete}>
-                Ya
-              </button>
-            </div>
-          </div>
-        </div>
+            ))}
+          </tbody>
+        </table>
       )}
 
-      {/* Modal Tambah/Edit Data */}
-      {modalIsOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h3>{isEditMode ? 'Edit Perusahaan' : 'Tambah Perusahaan'}</h3>
-            <form onSubmit={handleSubmit}>
-              <label>ID Perusahaan</label>
-              <input
-                type="text"
-                name="id_perusahaan"
-                value={formData.id_perusahaan}
-                onChange={handleInputChange}
-                required
-              />
-              <label>Tanggal Cek Fisik</label>
-              <input
-                type="date"
-                name="tanggal_cek_fisik"
-                value={formData.tanggal_cek_fisik}
-                onChange={handleInputChange}
-                required
-              />
-              <label>Nomor Polisi</label>
-              <input
-                type="text"
-                name="nomor_polisi"
-                value={formData.nomor_polisi}
-                onChange={handleInputChange}
-                required
-              />
-              <label>Nama Perusahaan</label>
-              <input
-                type="text"
-                name="nama_perusahaan"
-                value={formData.nama_perusahaan}
-                onChange={handleInputChange}
-                required
-              />
-              <div className="modal-actions">
-                <button type="button" className="btn btn-secondary" onClick={closeModal}>
-                  Batal
-                </button>
-                <button type="submit" className="btn btn-primary">
-                  {isEditMode ? 'Simpan Perubahan' : 'Tambah Data'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      <Addperusahaan
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        formData={formData}
+        onChange={handleInputChange}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 };

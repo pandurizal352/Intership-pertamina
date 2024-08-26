@@ -11,7 +11,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 // Register User
 // Register User
 router.post('/register', async (req, res) => {
-  const { username, password, role = "user" } = req.body;
+  const { username, password, namaperusahaan, role = "user" } = req.body;
 
   try {
     // Cek apakah username sudah ada
@@ -28,17 +28,33 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: "Invalid role" });
     }
 
+    // Buat perusahaan jika ada namaperusahaan
+    let perusahaanId = null;
+    if (namaperusahaan) {
+      const perusahaan = await prisma.perusahaan.create({
+        data: {
+          nama_perusahaan: namaperusahaan,
+          tanggal_cek_fisik: new Date().toISOString().split('T')[0], // tanggal sekarang
+          nomor_polisi: '' // Placeholder, bisa diisi dengan data lain atau null
+        },
+      });
+      perusahaanId = perusahaan.id_perusahaan;
+    }
+
     const user = await prisma.user.create({
       data: {
         username,
         password: hashedPassword,
         roleId: roleData.id,
+        // Hubungkan user dengan perusahaan jika perusahaan dibuat
+        perusahaan: perusahaanId ? { connect: { id_perusahaan: perusahaanId } } : undefined,
       },
     });
 
-    res.status(201).json({ message:"Registrasi berhasil",id: user.id, username: user.username, role: roleData.name });
+    res.status(201).json({ message: "Registrasi berhasil", id: user.id, username: user.username, role: roleData.name });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error(error);
+    res.status(500).json({ error: "Terjadi kesalahan saat registrasi." });
   }
 });
 
