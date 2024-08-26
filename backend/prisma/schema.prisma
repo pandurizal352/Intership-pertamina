@@ -73,14 +73,13 @@ model Sopir {
 
 }
 model User {
-  id               Int         @id @default(autoincrement())
-  username         String      @unique
-  password         String
-  roleId           Int
-  role             Role        @relation(fields: [roleId], references: [id])
-  perusahaan       Perusahaan? @relation(fields: [perusahaanId], references: [id_perusahaan])
-  perusahaanId     Int?        // Foreign key untuk Perusahaan
-  nama_perusahaan  String      // Field untuk menyimpan nama perusahaan
+  id            Int      @id @default(autoincrement())
+  username      String   @unique
+  password      String
+  roleId        Int
+  role          Role     @relation(fields: [roleId], references: [id])
+  nama_perusahaan String  
+  perusahaan           Perusahaan[] 
 }
 
 model Role {
@@ -91,11 +90,11 @@ model Role {
 
 model Perusahaan {
   id_perusahaan   Int           @id @default(autoincrement())
+  id_user   Int     @unique  
   tanggal_cek_fisik String?
   nomor_polisi    String?
-  nama_perusahaan String
-  
-  // Relasi ke tabel User
-  users           User[]        // Satu perusahaan dapat memiliki banyak user
+  nama_perusahaan String        
+  users    User?  @relation (fields: [id_user], references: [id])
   pemeriksaan     Pemeriksaan[]
+         // Menambahkan field ini untuk relasi ke model User
 }
