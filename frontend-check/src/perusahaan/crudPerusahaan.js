@@ -188,19 +188,19 @@ const Crudperusahaan = () => {
     try {
       const url = editMode ? `http://localhost:5000/perusahaan/${currentPerusahaanId}` : 'http://localhost:5000/perusahaan';
       const method = editMode ? 'PUT' : 'POST';
-
+  
       const response = await fetch(url, {
         method: method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData), 
+        body: JSON.stringify(formData),
       });
-
+  
       if (!response.ok) {
         throw new Error(editMode ? 'Error updating data' : 'Error adding data');
       }
-
+  
       const updatedPerusahaan = await response.json();
       if (editMode) {
         setPerusahaanList((prevPerusahaanList) =>
@@ -217,6 +217,8 @@ const Crudperusahaan = () => {
       console.error(editMode ? 'Error updating data:' : 'Error adding data:', error);
     }
   };
+  
+  
 
   return (
     <div className="perusahaan">
@@ -291,6 +293,7 @@ const Crudperusahaan = () => {
         formData={formData}
         onChange={handleInputChange}
         onSubmit={handleSubmit}
+        
       />
       <ConfirmDeleteModal
         isOpen={confirmDeleteIsOpen}
