@@ -268,8 +268,6 @@ const Crudsopir = () => {
         throw new Error(editMode ? 'Error updating data' : 'Error adding data');
       }
 
-   
-
       const updatedSopir = await response.json();
       if (editMode) {
         setSopirList((prevSopirList) =>

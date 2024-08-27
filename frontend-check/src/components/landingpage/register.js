@@ -4,7 +4,7 @@ import heroimg from '../../assets/roket.png';
 
 const Register = () => {
     const [username, setUsername] = useState('');
-    const [namaperusahaan, setNamaperusahaan] = useState('');
+    const [namaPerusahaan, setNamaPerusahaan] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const navigate = useNavigate();
@@ -12,7 +12,7 @@ const Register = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
 
-        // Pastikan password dan password confirm cocok POST http://localhost:3000/api/register 404 (Not Found)
+        // Pastikan password dan password confirm cocok
         if (password !== passwordConfirm) {
             alert('Password dan konfirmasi password tidak cocok');
             return;
@@ -26,8 +26,8 @@ const Register = () => {
                 },
                 body: JSON.stringify({
                     username,
-                    namaperusahaan,
                     password,
+                    nama_perusahaan: namaPerusahaan, // Menggunakan nama_perusahaan sesuai spesifikasi API
                 }),
             });
 
@@ -50,7 +50,7 @@ const Register = () => {
             {/* Left side: Form section */}
             <div className="flex-1 md:text-left space-y-6">
                 <form onSubmit={handleRegister}>
-                    <div className="mb-4"> {/* Menambahkan margin bawah */}
+                    <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">Username:</label>
                         <input 
                             type="text" 
@@ -62,19 +62,19 @@ const Register = () => {
                             required 
                         />
                     </div>
-                    <div className="mb-4"> {/* Menambahkan margin bawah */}
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="Namaperusahaan">Nama Perusahaan:</label>
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="namaPerusahaan">Nama Perusahaan:</label>
                         <input 
                             type="text" 
-                            id="Namaperusahaan" 
-                            name="Namaperusahaan" 
-                            value={namaperusahaan}
-                            onChange={(e) => setNamaperusahaan(e.target.value)}
+                            id="namaPerusahaan" 
+                            name="namaPerusahaan" 
+                            value={namaPerusahaan}
+                            onChange={(e) => setNamaPerusahaan(e.target.value)}
                             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" 
                             required 
                         />
                     </div>
-                    <div className="mb-4"> {/* Menambahkan margin bawah */}
+                    <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">Password:</label>
                         <input 
                             type="password" 
@@ -86,12 +86,12 @@ const Register = () => {
                             required 
                         />
                     </div>
-                    <div className="mb-6"> {/* Menambahkan margin bawah */}
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="passwordconfirm">Password Confirm:</label>
+                    <div className="mb-6">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="passwordConfirm">Password Confirm:</label>
                         <input 
                             type="password" 
-                            id="passwordconfirm" 
-                            name="passwordconfirm" 
+                            id="passwordConfirm" 
+                            name="passwordConfirm" 
                             value={passwordConfirm}
                             onChange={(e) => setPasswordConfirm(e.target.value)}
                             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" 
@@ -100,7 +100,7 @@ const Register = () => {
                     </div>
                     <button 
                         type="submit" 
-                        className="w-full bg-[#45a049] text-white py-2 rounded-md hover:bg-indigo-700 transition duration-300 ease-in-out mb-6" // Menambahkan margin bawah
+                        className="w-full bg-[#45a049] text-white py-2 rounded-md hover:bg-indigo-700 transition duration-300 ease-in-out mb-6"
                     >
                         Register
                     </button>

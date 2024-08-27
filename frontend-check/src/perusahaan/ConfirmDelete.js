@@ -17,8 +17,8 @@ const ConfirmDeleteModal = ({ isOpen, onRequestClose, onConfirm}) => {
       <h2>Konfirmasi Hapus</h2>
       <p>Apakah Anda yakin ingin menghapus?</p>
       <div className="modal-buttons">
-        <button className="modal-submit-button" onClick={onConfirm}>Hapus</button>
-        <button className="modal-close-button" onClick={onRequestClose}>Batal</button>
+        <button className="modal-submit-button" onClick={onConfirm}>Ya</button>
+        <button className="modal-close-button" onClick={onRequestClose}>Tidak</button>
       </div>
     </Modal>
   );
