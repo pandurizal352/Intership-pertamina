@@ -74,9 +74,30 @@
 
 .sidebar-footer {
   display: flex;
-  justify-content: center;
-  padding: 20px;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
 }
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  color: #ff4d4d; /* Warna merah untuk tombol logout */
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.logout-button:hover {
+  color: #ff1a1a; /* Warna merah gelap saat hover */
+}
+
+.logout-button svg {
+  margin-right: 5px;
+}
+
 
 /* Konten */
 .content {

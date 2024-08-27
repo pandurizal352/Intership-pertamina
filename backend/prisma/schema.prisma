@@ -95,5 +95,5 @@ model Perusahaan {
   nama_perusahaan String        
   users    User?  @relation (fields: [id_user], references: [id])
   pemeriksaan     Pemeriksaan[]
-         // Menambahkan field ini untuk relasi ke model User
+        
 }

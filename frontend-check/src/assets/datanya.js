@@ -1,25 +1,24 @@
-export const resourcesLinks = [
-    { href: "#", text: "Getting Started"},
-    { href: "#", text: "Getting Started"},
-    { href: "#", text: "Getting Started"},
-    { href: "#", text: "Getting Started"},
-    { href: "#", text: "Getting Started"},
-]
+// src/assets/datanya.js
+export const TautanLinks = [
+    { href: '#', text: 'Promosi' },
+    { href: '#', text: 'Pengadaan' },
+    { href: '#', text: 'Subsidi Tepat' },
+    { href: '#', text: 'Laporan Tahunan' },
+    { href: '#', text: 'Keberlanjutan' }
+];
 
-export const platfromLinks = [
-    { href: "#", text: "Getting Started"},
-    { href: "#", text: "Getting Started"},
-    { href: "#", text: "Getting Started"},
-    { href: "#", text: "Getting Started"},
-    { href: "#", text: "Getting Started"},
-]
+export const SitusTerkaitLinks = [
+    { href: '#', text: 'Pertamina (Persero)' },
+    { href: '#', text: 'MyPertamina' },
+    { href: '#', text: 'Pertamina Delivery Service' },
+    { href: '#', text: 'Pertamina Lubricants' },
+    { href: '#', text: 'Pertamina Retail' },
+    { href: '#', text: 'Pertamina Petrochemical Trading' }
+];
 
-export const CommunityLinks = [
-    { href: "#", text: "Getting Started"},
-    { href: "#", text: "Getting Started"},
-    { href: "#", text: "Getting Started"},
-    { href: "#", text: "Getting Started"},
-    { href: "#", text: "Getting Started"},
-]
-
-
+export const PatraTradingLinks = [
+    { href: '#', text: 'Pertamina Maintenance & Construction' },
+    { href: '#', text: 'Pertamina Patra Logistik' },
+    { href: '#', text: 'Patra SK' },
+    { href: '#', text: 'Pertamina International Timor SA' }
+];

@@ -13,7 +13,9 @@ import Kontak from './components/landingpage/kontak';
 import Footer from './components/landingpage/footer';
 import Login from './components/landingpage/login';
 import Register from './components/landingpage/register';
+import Ubahpassword from './components/landingpage/ubahpassword';
 import PemeriksaUser from './components/landingpage/pemeriksauser';
+
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 function App() {
@@ -64,8 +66,13 @@ function App() {
                   </svg>
                 </div>
                 <Hero />
-                <Servis />
-                <Kontak />
+                <div id="servis">
+                  <Servis />
+                </div>
+                <div id="kontak">
+                  <Kontak />
+                </div>
+               
                 <PemeriksaUser />
                 <Footer />
               </>
@@ -77,6 +84,16 @@ function App() {
               <>
                 <Navbar />
                 <Login />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/ubah-password"
+            element={
+              <>
+                <Navbar />
+                <Ubahpassword />
                 <Footer />
               </>
             }

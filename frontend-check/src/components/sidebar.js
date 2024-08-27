@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Sidebar.css';
 import { FaTachometerAlt, FaBuilding } from 'react-icons/fa';
 import { GiSteeringWheel } from "react-icons/gi";
 import { BsPersonBadgeFill } from "react-icons/bs";
 import { FcInspection } from "react-icons/fc";
+import { FiLogOut } from 'react-icons/fi';
 
 const Sidebar = ({ setActiveComponent }) => {
   const [active, setActive] = useState('dashboard');
+  const navigate = useNavigate();
 
   const menuItems = [
     { name: 'Dashboard', icon: <FaTachometerAlt />, key: 'dashboard' },
@@ -20,6 +23,15 @@ const Sidebar = ({ setActiveComponent }) => {
     setActive(key);
     setActiveComponent(key);
   };
+
+  const handleLogout = () => {
+    console.log("Logout initiated");
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    console.log("Token removed:", !localStorage.getItem('jwtToken'));
+    navigate('/login');
+  };
+  
 
   return (
     <div className="sidebar open">
@@ -45,7 +57,13 @@ const Sidebar = ({ setActiveComponent }) => {
         ))}
       </ul>
       <div className="sidebar-footer">
+      <button className="logout-button" onClick={handleLogout}>
+          <FiLogOut />
+          <span>Logout</span>
+        </button>
+        <br></br>
         <span>© 2024 Intership Pertamina</span>
+        
       </div>
     </div>
   );
