@@ -93,7 +93,7 @@ function App() {
           />
 
   
-           { <Route
+            <Route
             path="/admin/*"
             element={
               <ProtectedRoute
