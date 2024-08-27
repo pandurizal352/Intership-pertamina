@@ -26,6 +26,7 @@ const Navbar = () => {
                 <a href='/#servis' className='text-gray-700 hover:text-blue-600 transition-colors duration-300 px-4 py-2 md:py-0'>Servis</a>
                 <a href='/#kontak' className='text-gray-700 hover:text-blue-600 transition-colors duration-300 px-4 py-2 md:py-0'>Kontak</a>
                 <a href='/#aboutus' className='text-gray-700 hover:text-blue-600 transition-colors duration-300 px-4 py-2 md:py-0'>About Us</a>
+                <a href='/inputdata' className='text-gray-700 hover:text-blue-600 transition-colors duration-300 px-4 py-2 md:py-0'>Input data</a>
                 <a href='/login' className='py-2 px-5 text-[18px] font-bold text-white bg-indigo-500 rounded-full hover:bg-indigo-600 transition-colors duration-300 mx-4 md:mx-0'>Login</a>
             </div>
         </div>

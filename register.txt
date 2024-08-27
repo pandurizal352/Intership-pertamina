@@ -62,8 +62,7 @@ router.post('/register', async (req, res) => {
 
     res.status(201).json({ message: "Registrasi berhasil", id: user.id, username: user.username, role: roleData.name, nama_perusahaan: user.nama_perusahaan });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Terjadi kesalahan saat registrasi." });
+    res.status(500).json({ error: error.message });
   }
 });
 router.post('/login', async (req, res) => {

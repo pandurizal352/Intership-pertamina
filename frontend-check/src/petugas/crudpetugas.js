@@ -2,13 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { jsPDF } from 'jspdf';
 import Modal from 'react-modal';
 import { FaRegEdit, FaRegTrashAlt, FaInfoCircle } from 'react-icons/fa';
-import Addpetugas from './AddPetugas'; // Pastikan path impor benar
-import ConfirmDeleteModal from './ConfirmDelete'; // Import modal konfirmasi hapus
-import DetailPetugasModal from './Detail'; // Import modal detail
+import AddPetugas from './AddPetugas'; 
+import ConfirmDeleteModal from './ConfirmDelete'; 
+import DetailPetugasModal from './Detail'; 
 import '../components/CRUD.css';
+import { saveAs } from 'file-saver';
+import * as XLSX from 'xlsx';
 
-// Setel elemen aplikasi untuk menghindari masalah aksesibilitas
+// Set the application element for accessibility
 Modal.setAppElement('#root');
+
+// Base URL for API
+const BASE_URL = 'http://localhost:5000/petugas';
 
 const Crudpetugas = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -26,76 +31,45 @@ const Crudpetugas = () => {
   const [selectedPetugas, setSelectedPetugas] = useState(null); 
 
   useEffect(() => {
-    const fetchPetugasData = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/petugas');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setPetugasList(data); 
-        setLoading(false); 
-      } catch (error) {
-        console.error('Error fetching petugas data:', error);
-        setLoading(false); 
-      }
-    };
-
     fetchPetugasData();
   }, []); 
 
-  const handleSearchChange = async (event) => {
-    const newSearchTerm = event.target.value;
-    setSearchTerm(newSearchTerm);
-
-    if (newSearchTerm.trim() === '') {
-      try {
-        const response = await fetch('http://localhost:5000/petugas');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setPetugasList(data); 
-      } catch (error) {
-        console.error('Error fetching petugas data:', error);
-      }
-    } else {
-      try {
-        const response = await fetch(`http://localhost:5000/petugas/search?nama=${encodeURIComponent(newSearchTerm)}`);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setPetugasList(data); 
-        console.log('Search result:', data);
-      } catch (error) {
-        console.error('Error fetching search results:', error);
-      }
+  const fetchPetugasData = async (query = '') => {
+    try {
+      const response = await fetch(`${BASE_URL}${query}`);
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      setPetugasList(data); 
+      setLoading(false); 
+    } catch (error) {
+      console.error('Error fetching petugas data:', error);
+      setLoading(false); 
     }
   };
 
-  const handleSearchClick = async () => {
-    try {
-      const response = await fetch(`http://localhost:5000/petugas/search?nama=${encodeURIComponent(searchTerm)}`);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      setPetugasList(data); 
-      console.log('Search result:', data);
-    } catch (error) {
-      console.error('Error fetching search results:', error);
+  const handleSearchChange = (event) => {
+    const newSearchTerm = event.target.value;
+    setSearchTerm(newSearchTerm);
+    if (newSearchTerm.trim() === '') {
+      fetchPetugasData();
+    } else {
+      fetchPetugasData(`/search?nama=${encodeURIComponent(newSearchTerm)}`);
     }
+  };
+
+  const handleSearchClick = () => {
+    fetchPetugasData(`/search?nama=${encodeURIComponent(searchTerm)}`);
   };
 
   const handlePdfExport = () => {
     // Base64 string dari gambar logo Pertamina
-    const logoBase64 = ''; // Ganti dengan Base64 string gambar Pertamina yang telah didapatkan
+    const logoBase64 = 'data:image/png;base64,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'; // Ganti dengan Base64 string gambar Pertamina yang telah didapatkan
   
     const pdf = new jsPDF('p', 'mm', 'a4');
   
     // Ukuran halaman A4: 210mm x 297mm
     const pageWidth = pdf.internal.pageSize.getWidth();
+    // const pageHeight = pdf.internal.pageSize.getHeight();
   
     // Set margins
     const marginTop = 20;
@@ -161,10 +135,21 @@ const Crudpetugas = () => {
     // Finalize and save the PDF
     pdf.save('checklist.pdf');
   };
-
+  
   const handleExcelExport = () => {
-    console.log('Excel Export');
-  };
+       // Buat worksheet dari data petugas
+       const ws = XLSX.utils.json_to_sheet(petugasList, {
+        header: ['nama_petugas', 'nomor_petugas'],
+      });
+  
+      // Buat workbook dan tambahkan worksheet ke dalamnya
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'petugas Data');
+  
+      // Buat buffer dan simpan file Excel
+      const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'petugas_data.xlsx');
+    };
 
   const handleDetailClick = (petugas) => {
     setSelectedPetugas(petugas); 
@@ -173,7 +158,7 @@ const Crudpetugas = () => {
 
   const handleEditClick = (petugas) => {
     setEditMode(true); 
-    setCurrentPetugasId(petugas.id); 
+    setCurrentPetugasId(petugas.id_petugas); 
     setFormData({
       nama_petugas: petugas.nama_petugas,
       nomor_petugas: petugas.nomor_petugas,
@@ -181,9 +166,10 @@ const Crudpetugas = () => {
     setModalIsOpen(true); 
   };
 
+  
+
   const handleDeleteClick = (petugas) => {
-    setCurrentPetugasId(petugas.id); 
-    setSelectedPetugas(petugas); // Set petugas untuk ditampilkan di modal
+    setCurrentPetugasId(petugas.id_petugas); 
     setConfirmDeleteIsOpen(true); 
   };
   
@@ -192,13 +178,13 @@ const Crudpetugas = () => {
       const response = await fetch(`http://localhost:5000/petugas/${currentPetugasId}`, {
         method: 'DELETE',
       });
-  
+
       if (!response.ok) {
         throw new Error('Error deleting data');
       }
-  
+
       setPetugasList((prevPetugasList) =>
-        prevPetugasList.filter((item) => item.id !== currentPetugasId)
+        prevPetugasList.filter((item) => item.id_petugas !== currentPetugasId)
       );
       setConfirmDeleteIsOpen(false); 
       console.log('Delete successful for:', currentPetugasId);
@@ -206,12 +192,10 @@ const Crudpetugas = () => {
       console.error('Error deleting data:', error);
     }
   };
+
   const openModal = () => {
     setEditMode(false); 
-    setFormData({
-      nama_petugas: '',
-      nomor_petugas: '',
-    });
+    setFormData({ nama_petugas: '', nomor_petugas: '' });
     setModalIsOpen(true);
   };
 
@@ -221,10 +205,7 @@ const Crudpetugas = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData({ 
-      ...formData, 
-      [name]: name === 'nomor_petugas' ? value : value 
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (event) => {
@@ -233,34 +214,32 @@ const Crudpetugas = () => {
       const url = editMode ? `http://localhost:5000/petugas/${currentPetugasId}` : 'http://localhost:5000/petugas';
       const method = editMode ? 'PUT' : 'POST';
 
-      // Konversi nomor_petugas ke string
-      const dataToSend = {
-        ...formData,
-        nomor_petugas: formData.nomor_petugas.toString() 
-      };
-
       const response = await fetch(url, {
         method: method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(dataToSend),
+        body: JSON.stringify(formData), 
       });
 
       if (!response.ok) {
         throw new Error(editMode ? 'Error updating data' : 'Error adding data');
       }
 
+   
+
       const updatedPetugas = await response.json();
       if (editMode) {
         setPetugasList((prevPetugasList) =>
           prevPetugasList.map((petugas) =>
-            petugas.id === currentPetugasId ? updatedPetugas : petugas
+            petugas.id_petugas === currentPetugasId ? updatedPetugas : petugas
           )
         );
       } else {
         setPetugasList((prevPetugasList) => [...prevPetugasList, updatedPetugas]);
+        
       }
+      await fetchPetugasData();  // Fetch data again after update
       closeModal();
     } catch (error) {
       console.error(editMode ? 'Error updating data:' : 'Error adding data:', error);
@@ -271,22 +250,18 @@ const Crudpetugas = () => {
     <div className="petugas">
       <h2>Manajemen Petugas</h2>
       <button className="add-data-button" onClick={openModal}>Tambah Petugas</button>
-  
       <div className="input-group mb-3">
         <input 
           type="text" 
           className="form-control" 
           placeholder="Cari petugas..." 
           aria-label="Cari petugas" 
-          aria-describedby="button-addon2" 
           value={searchTerm} 
           onChange={handleSearchChange} 
         />
-  
         <button 
           className="btn btn-outline-secondary search-button" 
           type="button" 
-          id="button-addon2" 
           onClick={handleSearchClick}
         >
           Cari
@@ -306,7 +281,6 @@ const Crudpetugas = () => {
           Ekstrak Excel
         </button>
       </div>
-  
       {loading ? (
         <p>Loading...</p> 
       ) : (
@@ -320,15 +294,15 @@ const Crudpetugas = () => {
               </tr>
             </thead>
             <tbody>
-              {petugasList.map((petugas) => (
+              {petugasList.map(petugas => (
                 <tr key={petugas.id}>
                   <td>{petugas.nama_petugas}</td>
                   <td>{petugas.nomor_petugas}</td>
                   <td>
                     <div className="action-buttons">
-                      <button className="action-button-detail " onClick={() => handleDetailClick(petugas)}><FaInfoCircle /> detail</button>
-                      <button className="action-button-edit " onClick={() => handleEditClick(petugas)}><FaRegEdit /> edit</button>
-                      <button className="action-button-hapus " onClick={() => handleDeleteClick(petugas)}><FaRegTrashAlt /> hapus</button>
+                      <button className="action-button-detail" onClick={() => handleDetailClick(petugas)}><FaInfoCircle /> detail</button>
+                      <button className="action-button-edit" onClick={() => handleEditClick(petugas)}><FaRegEdit /> edit</button>
+                      <button className="action-button-hapus" onClick={() => handleDeleteClick(petugas)}><FaRegTrashAlt /> hapus</button>
                     </div>
                   </td>
                 </tr>
@@ -337,23 +311,19 @@ const Crudpetugas = () => {
           </table>
         </div>
       )}
-    
-  
-      <Addpetugas
+      <AddPetugas
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         formData={formData}
         onChange={handleInputChange}
         onSubmit={handleSubmit}
       />
-  
-  <ConfirmDeleteModal
-  isOpen={confirmDeleteIsOpen}
-  onRequestClose={() => setConfirmDeleteIsOpen(false)}
-  onConfirm={handleConfirmDelete}
-  itemName={selectedPetugas ? selectedPetugas.nama_petugas : ''} // Kirim nama petugas
-/>
-  
+      <ConfirmDeleteModal
+        isOpen={confirmDeleteIsOpen}
+        onRequestClose={() => setConfirmDeleteIsOpen(false)}
+        onConfirm={handleConfirmDelete}
+        itemName={selectedPetugas ? selectedPetugas.nama_petugas : ''} 
+      />
       <DetailPetugasModal
         isOpen={detailModalIsOpen}
         onRequestClose={() => setDetailModalIsOpen(false)}
@@ -361,6 +331,6 @@ const Crudpetugas = () => {
       />
     </div>
   );
-}
+};
 
 export default Crudpetugas;
