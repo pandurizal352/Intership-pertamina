@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 
-const PeriksaUser = () => {
-    
+function PeriksaUser() {
+
 
     return (
         <div>
