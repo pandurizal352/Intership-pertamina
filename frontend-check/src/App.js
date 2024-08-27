@@ -91,33 +91,9 @@ function App() {
               </>
             }
           />
-            <Route
-            path="/admin/*"
-            element={
-              <>
-                <button
-                  className="toggle-sidebar-button"
-                  onClick={toggleSidebar}
-                  style={{
-                    left: isSidebarOpen ? '250px' : '15px',
-                  }}
-                >
-                  ☰
-                </button>
-                <div className="main-container">
-                  <div className={`sidebar-container ${isSidebarOpen ? 'open' : ''}`}>
-                    <Sidebar
-                      setActiveComponent={setActiveComponent}
-                    />
-                  </div>
-                  <div className="content">
-                    {renderComponent()}
-                  </div>
-                </div>
-              </>
-            }
-          />
-           {/* <Route
+
+  
+           { <Route
             path="/admin/*"
             element={
               <ProtectedRoute
@@ -144,10 +120,12 @@ function App() {
                     </div>
                   </>
                 )}
-                allowedRoles={['petugas']} // Only allow petugas (admin) to access this route
+
+                allowedRoles={['admin']} // Only allow petugas (admin) to access this route
               />
             }
-          />  */}
+          /> 
+
 
          
         </Routes>
@@ -158,5 +136,6 @@ function App() {
 
 
 export default App;
+
 
 

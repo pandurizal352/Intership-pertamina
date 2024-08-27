@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cors = require('cors');
 const bodyParser = require('body-parser'); // Menambahkan middleware body-parser
 
+// Middleware JWT
+
 // Mengimpor router dari masing-masing route
 const usercheck = require('./routes/users');
 const sopircheck = require('./routes/sopir');
@@ -12,7 +14,7 @@ const perusahaancheck = require('./routes/perusahaan');
 const petugascheck = require('./routes/petugas');
 var authRouter = require('./routes/auth');
 const test = require('./routes/screentest');
-// const pemeriksaanRouter = require('./routes/Pemeriksaan');
+const pemeriksaanRouter = require('./routes/pemeriksaan');
 
 var app = express();
 const PORT = process.env.PORT || 5000; // Mendefinisikan PORT
@@ -39,7 +41,7 @@ app.use('/sopir', sopircheck);
 app.use('/perusahaan', perusahaancheck);
 app.use('/petugas', petugascheck);
 app.use('/test', test);
-// app.use('/pemeriksaan', pemeriksaanRouter);
+app.use('/pemeriksaan', pemeriksaanRouter);
 app.use('/user', usercheck);
 
 // Penanganan error global untuk keseluruhan aplikasi
