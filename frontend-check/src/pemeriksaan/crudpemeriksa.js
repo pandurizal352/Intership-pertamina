@@ -4,6 +4,7 @@ import { FaRegEdit, FaRegTrashAlt, FaInfoCircle } from 'react-icons/fa';
 import AddPemeriksa from './AddPemeriksa'; // Pastikan jalur impor benar
 import '../components/CRUD.css';
 
+
 // Set the app element to avoid accessibility issues
 Modal.setAppElement('#root');
 

@@ -38,20 +38,20 @@ router.post('/users', async (req, res) => {
 router.get('/users', async (req, res) => {
   try {
     const users = await prisma.user.findMany({
-      include: {
-        role: true,
-        perusahaan: true // Misalkan user memiliki relasi ke perusahaan
+      include: { role: true,perusahaan: true },
+      orderBy: {
+        role: {
+          name: 'asc' // Urutkan berdasarkan nama role secara ascending
+        }
       }
     });
 
     const userData = users.map(user => ({
       id: user.id,
       username: user.username,
-      nama_perusahaan: user.perusahaan ? user.perusahaan.nama_perusahaan : "", // Menangani jika perusahaan tidak ada
       role: user.role.name,
-    }));
-
-    res.json(userData);
+      nama_perusahaan: user.perusahaan?.nama_perusahaan 
+    })));
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -73,7 +73,7 @@ router.post('/login', async (req, res) => {
     // Use include to fetch the role data
     const user = await prisma.user.findUnique({
       where: { username },
-      include: { role: true } // Include role data
+      include: { role: true , perusahaan: true} // Include role data
     });
 
     if (!user) {
@@ -87,7 +87,7 @@ router.post('/login', async (req, res) => {
 
     const token = jwt.sign({ id: user.id, role: user.role.name }, JWT_SECRET, { expiresIn: '1h' });
 
-    res.json({ token, user: { id: user.id, username: user.username, role: user.role.name } });
+    res.json({ token, user: { id: user.id, username: user.username, role: user.role.name, nama_perusahaan: user.nama_perusahaan  } });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -5,8 +5,8 @@ import '../components/AddDataModal.css'; // Gunakan CSS yang sama atau buat yang
 // Set the app element to avoid accessibility issues
 Modal.setAppElement('#root');
 
-const DetailPetugasModal = ({ isOpen, onRequestClose, petugasData }) => {
-  if (!petugasData) return null; // Jika tidak ada data petugas, jangan tampilkan apapun
+const DetailPetugasModal = ({ isOpen, onRequestClose, petugasDetail }) => {
+  if (!petugasDetail) return null; // Jika tidak ada data petugas, jangan tampilkan apapun
 
   return (
     <Modal
@@ -18,8 +18,8 @@ const DetailPetugasModal = ({ isOpen, onRequestClose, petugasData }) => {
     >
       <h2>Detail Petugas</h2>
       <div className="petugas-details">
-        <p><strong>Nomor Petugas:</strong> {petugasData.nomor_petugas}</p>
-        <p><strong>Nama Petugas:</strong> {petugasData.nama_petugas}</p>
+        <p><strong>Nomor Petugas:</strong> {petugasDetail.nomor_petugas}</p>
+        <p><strong>Nama Petugas:</strong> {petugasDetail.nama_petugas}</p>
         {/* Tambahkan informasi lain yang ingin ditampilkan */}
       </div>
       <div className="modal-buttons">
