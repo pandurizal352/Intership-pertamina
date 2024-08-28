@@ -26,9 +26,11 @@ const Login = ({ setUser }) => {
 
             if (response.ok) {
                 // Simpan token dan informasi user
-                localStorage.setItem('token', data.token);
-                const { role } = data.user;
-
+                // Di komponen Login setelah login berhasil
+                localStorage.setItem('user', JSON.stringify(data.user));
+                localStorage.setItem('token', data.token, );
+                const { role, nama_perusahaan } = data.user;
+                console.log('Nama Perusahaan:', nama_perusahaan);
                 // Set user state di parent component jika diperlukan
                 if (setUser) {
                     setUser(data.user);
@@ -38,7 +40,7 @@ const Login = ({ setUser }) => {
                 if (role === 'admin') {
                     navigate('/admin');
                 } else if (role === 'user') {
-                    navigate('/input-data');
+                    navigate(window.location.href = '/');
                 } else {
                     alert('Role tidak dikenal');
                 }

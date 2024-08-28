@@ -8,14 +8,14 @@ const Hero = () => {
             {/* Left side: Text section */}
             <div className='flex-1 md:text-left'>
                 <h1 className='font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl mt-5 leading-tight'>
-                    Let's go join<br />
+                    Let's go join <br />
                 </h1>
                 <p className='my-5 text-[#afaeae] text-sm sm:text-base md:text-lg'>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 </p>
                 <div className='flex items-center gap-3 py-3 px-4 rounded-full shadow-lg justify-between mx-auto md:mx-0 hover:shadow-xl transition-all duration-300 ease-in-out' 
                     style={{ backgroundColor: "#45a049", maxWidth: "190px" }}>
-                    <span className='font-bold text-white text-sm sm:text-base'>Learn More</span>
+                    <span className='font-bold text-white text-sm sm:text-base'><a href="/register">Learn More</a></span>
                     <FaArrowRightLong className='font-bold text-white'/>
                 </div>
             </div>
