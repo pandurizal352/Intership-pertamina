@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import { FaRegEdit, FaRegTrashAlt, FaInfoCircle } from 'react-icons/fa';
 import AddPemeriksa from './AddPemeriksa'; // Pastikan jalur impor benar
@@ -11,18 +11,39 @@ const Pemeriksaan = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [formData, setFormData] = useState({
-    id_perusahaan: '',
-    id_petugas: '',
-    id_sopir: '',
     tanggal_pemeriksaan: '',
     jenis_pemeriksaan: '',
     penjelasan: '',
     keterangan: '',
     status: '',
     foto: '',
+    safety_switch: false,
+    kabellistrik1: false,
+    kabellistrik2: false,
+    kabellistrik3: false,
+    kabellistrik4: false,
+    kabellistrik5: false,
+    Batteraiaccu1: false,
+    Batteraiaccu2: false,
+    Batteraiaccu3: false,
+    Batteraiaccu4: false,
   });
+  const [dataPemeriksaan, setDataPemeriksaan] = useState([]);
 
+  useEffect(() => {
+    // Fetch data from the API when the component mounts
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/'); // Update this URL if necessary
+        const result = await response.json();
+        setDataPemeriksaan(result);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
+    fetchData();
+  }, []);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -43,18 +64,18 @@ const Pemeriksaan = () => {
     // Implementasikan logika ekspor Excel di sini
   };
 
-  const handleDetailClick = () => {
-    console.log('Detail clicked');
+  const handleDetailClick = (id) => {
+    console.log('Detail clicked for ID:', id);
     // Implementasikan logika detail di sini
   };
 
-  const handleEditClick = () => {
-    console.log('Edit clicked');
+  const handleEditClick = (id) => {
+    console.log('Edit clicked for ID:', id);
     // Implementasikan logika edit di sini
   };
 
-  const handleDeleteClick = () => {
-    console.log('Delete clicked');
+  const handleDeleteClick = (id) => {
+    console.log('Delete clicked for ID:', id);
     // Implementasikan logika hapus di sini
   };
 
@@ -67,8 +88,8 @@ const Pemeriksaan = () => {
   };
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type, checked } = event.target;
+    setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
   };
 
   const handleSubmit = (event) => {
@@ -120,9 +141,6 @@ const Pemeriksaan = () => {
       <table>
         <thead>
           <tr>
-            <th>Nama petugas</th>
-            <th>ID Petugas</th>
-            <th>ID Sopir</th>
             <th>Tanggal Pemeriksaan</th>
             <th>Jenis Pemeriksaan</th>
             <th>Penjelasan</th>
@@ -133,37 +151,23 @@ const Pemeriksaan = () => {
           </tr>
         </thead>
         <tbody>
-          {/* {dataPemeriksaan.map((pemeriksaan) => (
+          {dataPemeriksaan.map((pemeriksaan) => (
             <tr key={pemeriksaan.id_pemeriksaan}>
-              <td>{pemeriksaan.id_perusahaan}</td>
-              <td>{pemeriksaan.id_petugas}</td>
-              <td>{pemeriksaan.id_sopir}</td>
               <td>{pemeriksaan.tanggal_pemeriksaan}</td>
               <td>{pemeriksaan.jenis_pemeriksaan}</td>
               <td>{pemeriksaan.penjelasan}</td>
               <td>{pemeriksaan.keterangan}</td>
               <td>{pemeriksaan.status}</td>
-              <td>{pemeriksaan.foto}</td> */}
-          <tr>
-              <td>id perusahaan</td>
-              <td>id petugas</td>
-              <td>id sopir</td>
-              <td>tanggal_pemeriksaan</td>
-              <td>jenis_pemeriksaan</td>
-              <td>penjelasan</td>
-              <td>keterangan</td>
-              <td>status</td>
-              <td>foto</td>
-             
+              <td>{pemeriksaan.foto}</td>
               <td>
                 <div className="action-buttons">
-                  <button className="action-button-detail" onClick={handleDetailClick}><FaInfoCircle />Detail</button>
-                  <button className="action-button-edit" onClick={handleEditClick}><FaRegEdit />Edit</button>
-                  <button className="action-button-hapus" onClick={handleDeleteClick}><FaRegTrashAlt />Hapus</button>
+                  <button className="action-button-detail" onClick={() => handleDetailClick(pemeriksaan.id_pemeriksaan)}><FaInfoCircle /> Detail</button>
+                  <button className="action-button-edit" onClick={() => handleEditClick(pemeriksaan.id_pemeriksaan)}><FaRegEdit /> Edit</button>
+                  <button className="action-button-hapus" onClick={() => handleDeleteClick(pemeriksaan.id_pemeriksaan)}><FaRegTrashAlt /> Hapus</button>
                 </div>
               </td>
             </tr>
-          {/* ))} */}
+          ))}
         </tbody>
       </table>
 
@@ -173,19 +177,9 @@ const Pemeriksaan = () => {
         formData={formData}
         onChange={handleInputChange}
         onSubmit={handleSubmit}
-        
       />
     </div>
   );
 };
 
 export default Pemeriksaan;
-
-
-
-
-
-
-
-
-
