@@ -29,8 +29,8 @@ const Login = ({ setUser }) => {
                 // Di komponen Login setelah login berhasil
                 localStorage.setItem('user', JSON.stringify(data.user));
                 localStorage.setItem('token', data.token, );
-                const { role } = data.user;
-
+                const { role, nama_perusahaan } = data.user;
+                console.log('Nama Perusahaan:', nama_perusahaan);
                 // Set user state di parent component jika diperlukan
                 if (setUser) {
                     setUser(data.user);

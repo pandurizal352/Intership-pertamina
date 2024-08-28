@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Sidebar from './components/sidebar';
 import Dashboard from './components/Dashboard';
@@ -14,13 +14,22 @@ import Footer from './components/landingpage/footer';
 import Login from './components/landingpage/login';
 import Register from './components/landingpage/register';
 import Ubahpassword from './components/landingpage/ubahpassword';
-import PemeriksaUser from './components/landingpage/pemeriksauser';
+import Inputdatasupir from './inputdata/inputdatasupir';
+import Inputdataperusahaan from './inputdata/input-dataperusahaan';
+import Inputdatapemeriksaan from './inputdata/input-datapemeriksaan';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
+
 function App() {
   const [activeComponent, setActiveComponent] = useState('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+  }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -72,12 +81,19 @@ function App() {
                 <div id="kontak">
                   <Kontak />
                 </div>
-               
-                <PemeriksaUser />
+                {isLoggedIn && (
+                   <>
+                 </>
+                )}
+                <Route path="/halaman1" element={<Inputdatasupir />} />
+                <Route path="/halaman2" element={<Inputdataperusahaan />} />
+                <Route path="/halaman3" element={<Inputdatapemeriksaan />} />
                 <Footer />
               </>
             }
           />
+           
+          
           <Route
             path="/login"
             element={
@@ -108,9 +124,7 @@ function App() {
               </>
             }
           />
-
-  
-            <Route
+          <Route
             path="/admin/*"
             element={
               <ProtectedRoute
@@ -127,9 +141,7 @@ function App() {
                     </button>
                     <div className="main-container">
                       <div className={`sidebar-container ${isSidebarOpen ? 'open' : ''}`}>
-                        <Sidebar
-                          setActiveComponent={setActiveComponent}
-                        />
+                        <Sidebar setActiveComponent={setActiveComponent} />
                       </div>
                       <div className="content">
                         {renderComponent()}
@@ -137,22 +149,14 @@ function App() {
                     </div>
                   </>
                 )}
-
-                allowedRoles={['admin']} // Only allow petugas (admin) to access this route
+                allowedRoles={['admin']}
               />
             }
-          /> 
-
-
-         
+          />
         </Routes>
       </div>
     </Router>
   );
 }
 
-
 export default App;
-
-
-

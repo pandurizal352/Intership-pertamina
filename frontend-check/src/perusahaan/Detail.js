@@ -5,22 +5,22 @@ import '../components/AddDataModal.css'; // Gunakan CSS yang sama atau buat yang
 // Set the app element to avoid accessibility issues
 Modal.setAppElement('#root');
 
-const DetailPetugasModal = ({ isOpen, onRequestClose, petugasData }) => {
-  if (!petugasData) return null; // Jika tidak ada data petugas, jangan tampilkan apapun
+const DetailPerusahaanModal = ({ isOpen, onRequestClose, perusahaan }) => {
+  if (!perusahaan) return null; // Pastikan nama props sesuai
 
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      contentLabel="Detail Petugas"
+      contentLabel="Detail Perusahaan"
       className="modal"
       overlayClassName="modal-overlay"
     >
-      <h2>Detail Petugas</h2>
-      <div className="petugas-details">
-        <p><strong>Nomor Petugas:</strong> {petugasData.nomor_petugas}</p>
-        <p><strong>Nama Petugas:</strong> {petugasData.nama_petugas}</p>
-        {/* Tambahkan informasi lain yang ingin ditampilkan */}
+      <h2>Detail Perusahaan</h2>
+      <div className="perusahaan-details"> {/* Periksa nama kelas CSS */}
+        <p><strong>Tanggal Cek Fisik:</strong> {perusahaan.tanggal_cek_fisik}</p>
+        <p><strong>Nomor Polisi:</strong> {perusahaan.nomor_polisi}</p>
+        <p><strong>Nama Perusahaan:</strong> {perusahaan.nama_perusahaan}</p>
       </div>
       <div className="modal-buttons">
         <button className="modal-close-button" onClick={onRequestClose}>Close</button>
@@ -29,4 +29,5 @@ const DetailPetugasModal = ({ isOpen, onRequestClose, petugasData }) => {
   );
 };
 
-export default DetailPetugasModal;
+
+export default DetailPerusahaanModal;

@@ -1,0 +1,117 @@
+/* HalamanPemeriksaan.css */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Mengatur tinggi minimum kontainer */
+    padding: 2rem;
+    background-color: #f7fafc;
+  }
+  
+  .form-container {
+    width: 100%;
+    max-width: 800px; /* Menambah lebar form agar lebih luas */
+    padding: 2rem; /* Menambah padding agar form lebih lapang */
+    background-color: #ffffff;
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Menambah scroll jika konten melebihi kontainer */
+    box-sizing: border-box; /* Memastikan padding dan border termasuk dalam total width */
+  }
+  
+  .title {
+    font-size: 1.75rem; /* Menambah ukuran font judul */
+    font-weight: bold;
+    color: #2d3748;
+    margin-bottom: 1.5rem;
+  }
+  
+  .input-field, .checkbox-group input[type="checkbox"] {
+    width: 100%;
+  }
+  
+  .input-field {
+    padding: 0.75rem; /* Menambah padding */
+    margin-bottom: 1rem; /* Menambah jarak antar input */
+    border: 1px solid #e2e8f0;
+    border-radius: 0.25rem;
+    font-size: 1rem; /* Menambah ukuran font */
+  }
+  
+  .input-field:focus {
+    outline: none;
+    border-color: #3182ce;
+    box-shadow: 0 0 0 1px #3182ce;
+  }
+/* HalamanPemeriksaan.css */
+
+/* Existing styles... */
+/* HalamanPemeriksaan.css */
+
+.checkbox-group {
+  margin-bottom: 1.5rem;
+}
+
+.checkbox-group label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #4a5568;
+  margin-bottom: 0.5rem;
+}
+
+.checkbox-group .radio-group {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-group .radio-item {
+  margin-right: 1rem;
+}
+
+.checkbox-group input[type="radio"] {
+  margin-right: 0.25rem;
+}
+
+.checkbox-group .radio-label {
+  font-size: 0.875rem;
+  margin-right: 0.5rem;
+}
+
+  
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem; /* Menambah jarak atas tombol */
+  }
+  
+  .button {
+    padding: 0.75rem 1.5rem; /* Menambah padding tombol */
+    border-radius: 0.375rem; /* Menambah border-radius tombol */
+    font-size: 1rem; /* Menambah ukuran font tombol */
+    font-weight: 600;
+    color: #ffffff;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    outline: none;
+  }
+  
+  .button-back {
+    background-color: #4a5568;
+  }
+  
+  .button-back:hover {
+    background-color: #2d3748;
+  }
+  
+  .button-submit {
+    background-color: #48bb78;
+  }
+  
+  .button-submit:hover {
+    background-color: #38a169;
+  }
+  

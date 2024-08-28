@@ -47,7 +47,7 @@ router.get('/', async (req, res) => {
 router.get('/users', async (req, res) => {
   try {
     const users = await prisma.user.findMany({
-      include: { role: true },
+      include: { role: true,perusahaan: true },
       orderBy: {
         role: {
           name: 'asc' // Urutkan berdasarkan nama role secara ascending
@@ -58,7 +58,8 @@ router.get('/users', async (req, res) => {
     res.json(users.map(user => ({
       id: user.id,
       username: user.username,
-      role: user.role.name
+      role: user.role.name,
+      nama_perusahaan: user.perusahaan?.nama_perusahaan 
     })));
   } catch (error) {
     res.status(500).json({ error: error.message });

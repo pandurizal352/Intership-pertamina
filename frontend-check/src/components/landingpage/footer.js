@@ -30,7 +30,7 @@ const Footer = () => {
         <footer className='mt-20 border-t py-8 border-neutral-700 bg-gradient-to-r from-[#025fa4] to-[#03396c] text-neutral-300 text-sm'>
             <div className='container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
                 <div className='flex flex-col items-start'>
-                    <img src={heroimg} alt='Pertamina Logo' className='mb-4 w-32' />
+                    <img src={heroimg} alt='Pertamina Logo' className='w-70 h-60' />
                     <p>
                     Jl. R. E. Martadinata, Mata, Kec. Kendari, Kota Kendari, Sulawesi Tenggara 93121
                     </p>
