@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Sidebar from './components/sidebar';
 import Dashboard from './components/Dashboard';
 import Crudpemeriksaan from './pemeriksaan/crudpemeriksa';
@@ -81,18 +81,10 @@ function App() {
                 <div id="kontak">
                   <Kontak />
                 </div>
-                {isLoggedIn && (
-                   <>
-                 </>
-                )}
-                <Route path="/halaman1" element={<Inputdatasupir />} />
-                <Route path="/halaman2" element={<Inputdataperusahaan />} />
-                <Route path="/halaman3" element={<Inputdatapemeriksaan />} />
                 <Footer />
               </>
             }
           />
-           
           
           <Route
             path="/login"
@@ -153,6 +145,15 @@ function App() {
               />
             }
           />
+          {isLoggedIn && (
+            <Route path="/halaman1" element={<Inputdatasupir />} />
+          )}
+          {isLoggedIn && (
+            <Route path="/halaman2" element={<Inputdataperusahaan />} />
+          )}
+          {isLoggedIn && (
+            <Route path="/halaman3" element={<Inputdatapemeriksaan />} />
+          )}
         </Routes>
       </div>
     </Router>

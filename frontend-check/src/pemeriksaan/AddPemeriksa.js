@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import '../components/AddDataModal.css';
+import Pemeriksaan from './crudpemeriksa';
 
 // Set the app element to avoid accessibility issues
 Modal.setAppElement('#root');
 
-const AddPemeriksa = ({ isOpen, onRequestClose, formData, onChange, onSubmit, dataRegu, dataLine, dataSachet }) => {
+const AddPemeriksa = ({ isOpen, onRequestClose, formData, onChange, onSubmit }) => {
   const [localFormData, setLocalFormData] = useState(formData);
 
   useEffect(() => {
@@ -21,6 +22,28 @@ const AddPemeriksa = ({ isOpen, onRequestClose, formData, onChange, onSubmit, da
     onChange(e); // Update parent component's state
   };
 
+  const handleBooleanChange = (name, value) => {
+    setLocalFormData({
+      ...localFormData,
+      [name]: value === 'true'
+    });
+    onChange({ target: { name, value: value === 'true' } });
+  };
+
+  // Mapping dari nama variabel ke label yang ingin Anda tampilkan
+  const labelMapping = {
+    safety_switch: 'Semua aliran listrik terisolasi',
+    kabellistrik1: 'Konduit pelindung tidak ada yang rusak terpotong, pecag atau tertekuk terjepit',
+    kabellistrik2: 'Setiap penyambungan kabel harus dilindungi menggunakan junction box (metode lain tidak boleh, kecuali dilindung junction bor seperti menggunakan isolation, skun, creamping)',
+    kabellistrik3: 'Tidak terdapat alat listrik tambahan',
+    kabellistrik4: 'Pemantik api (untuk menyalakan rokok)',
+    kabellistrik5: 'kabel listrik 5',
+    Batteraiaccu1: 'Accu tidak boleh dibawah tangki',
+    Batteraiaccu2: 'Posisi accu tidak boleh dekat dengan tetesan',
+    Batteraiaccu3: 'Accu harus diberi penutup dari bahan isolator',
+    Batteraiaccu4: 'Accu harus diberi penutup dari bahan bakar',
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -31,32 +54,100 @@ const AddPemeriksa = ({ isOpen, onRequestClose, formData, onChange, onSubmit, da
     >
       <h2>Tambah Data Pemeriksaan</h2>
       <form onSubmit={onSubmit}>
-        <label>ID Perusahaan:</label>
-        <input type="text" name="id_perusahaan" value={localFormData.id_perusahaan} onChange={handleChange} required />
+      <input
+          type="text"
+          name="userId"
+          value={localFormData.userId}
+          readOnly
+          className="input-field"
+         
+        />
+        <input
+          type="date"
+          name="tanggal_pemeriksaan"
+          placeholder="Tanggal Pemeriksaan"
+          value={localFormData.tanggal_pemeriksaan || ''}
+          onChange={handleChange}
+          className="input-field"
+        />
+        
+        <input
+          type="text"
+          name="jenis_pemeriksaan"
+          placeholder="Jenis Pemeriksaan"
+          value={localFormData.jenis_pemeriksaan || ''}
+          onChange={handleChange}
+          className="input-field"
+        />
+        <input
+          type="text"
+          name="penjelasan"
+          placeholder="Penjelasan"
+          value={localFormData.penjelasan || ''}
+          onChange={handleChange}
+          className="input-field"
+        />
+        <input
+          type="text"
+          name="keterangan"
+          placeholder="Keterangan"
+          value={localFormData.keterangan || ''}
+          onChange={handleChange}
+          className="input-field"
+        />
+        <input
+          type="text"
+          name="status"
+          placeholder="Status"
+          value={localFormData.status || ''}
+          onChange={handleChange}
+          className="input-field"
+        />
+        <input
+          type="text"
+          name="foto"
+          placeholder="Foto URL"
+          value={localFormData.foto || ''}
+          onChange={handleChange}
+          className="input-field"
+        />
 
-        <label>ID Petugas:</label>
-        <input type="text" name="id_petugas" value={localFormData.id_petugas} onChange={handleChange} required />
+        {Object.keys(labelMapping).map((item) => (
+          <div key={item} className="checkbox-group">
+            <label>{labelMapping[item]}:</label>
+            <div className="radio-group">
+              <div className="radio-item">
+                <input
+                  type="radio"
+                  name={item}
+                  value="true"
+                  checked={localFormData[item] === true}
+                  onChange={(e) => handleBooleanChange(item, e.target.value)}
+                />
+                <label className="radio-label">Yes</label>
+              </div>
+              <div className="radio-item">
+                <input
+                  type="radio"
+                  name={item}
+                  value="false"
+                  checked={localFormData[item] === false}
+                  onChange={(e) => handleBooleanChange(item, e.target.value)}
+                />
+                <label className="radio-label">No</label>
+              </div>
+            </div>
+          </div>
+        ))}
 
-        <label>ID Sopir:</label>
-        <input type="text" name="id_sopir" value={localFormData.id_sopir} onChange={handleChange} required />
-
-        <label>Tanggal Pemeriksaan:</label>
-        <input type="date" name="tanggal_pemeriksaan" value={localFormData.tanggal_pemeriksaan} onChange={handleChange} required />
-
-        <label>Jenis Pemeriksaan:</label>
-        <input type="text" name="jenis_pemeriksaan" value={localFormData.jenis_pemeriksaan} onChange={handleChange} required />
-
-        <label>Penjelasan:</label>
-        <textarea name="penjelasan" value={localFormData.penjelasan} onChange={handleChange} required />
-
-        <label>Keterangan:</label>
-        <textarea name="keterangan" value={localFormData.keterangan} onChange={handleChange} required />
-
-        <label>Status:</label>
-        <input type="text" name="status" value={localFormData.status} onChange={handleChange} required />
-
-        <label>Foto:</label>
-        <input type="file" name="foto" onChange={handleChange} required />
+      <input
+          type="text"
+          name="verifikasi"
+          placeholder="verifikasi"
+          value={localFormData.verifikasi || ''}
+          onChange={handleChange}
+          className="input-field"
+        />
 
         <div className="modal-buttons">
           <button type="submit" className="modal-submit-button">Submit</button>

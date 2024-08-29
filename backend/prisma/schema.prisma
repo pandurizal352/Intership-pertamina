@@ -11,74 +11,57 @@ datasource db {
 
 
 model Pemeriksaan {
-  id_pemeriksaan     Int           @id @default(autoincrement())
-  id_perusahaan      Int
-  id_petugas         Int
-  id_sopir           Int
+  id_pemeriksaan     Int        @id @default(autoincrement())
+  userId        Int           // Field untuk menyimpan id user
   tanggal_pemeriksaan String
   jenis_pemeriksaan  String
   penjelasan         String
   keterangan         String
   status             String
   foto               String
+  safety_switch Boolean
+  kabellistrik1 Boolean
+  kabellistrik2 Boolean
+  kabellistrik3 Boolean
+  kabellistrik4 Boolean
+  kabellistrik5 Boolean
+  Batteraiaccu1 Boolean
+  Batteraiaccu2 Boolean
+  Batteraiaccu3 Boolean
+  Batteraiaccu4 Boolean
+  Verifikasi String?
 
-  perusahaan         Perusahaan    @relation(fields: [id_perusahaan], references: [id_perusahaan])
-  petugas            Petugas       @relation(fields: [id_petugas], references: [id_petugas])
-  sopir              Sopir         @relation(fields: [id_sopir], references: [id_sopir])
-
-  kabelListrik       KabelListrik? @relation("PemeriksaanToKabelListrik", fields: [id_kabelListrik], references: [id])
-  bateraiAccu        BateraiAccu?  @relation("PemeriksaanToBateraiAccu", fields: [id_bateraiAccu], references: [id])
-
-  id_kabelListrik    Int?
-  id_bateraiAccu     Int?
+  user          User          @relation(fields: [userId], references: [id]) 
 }
-
-model KabelListrik {
-  id                Int             @id @default(autoincrement())
-  semua_terisolasi  Boolean
-  kondisi_konduit   Boolean      // "Baik" atau "Tidak"
-  perlindungan_kabel Boolean
-  alat_listrik_tambahan Boolean
-  pemantik_dilepas  Boolean
-
-  pemeriksaan       Pemeriksaan[]   @relation("PemeriksaanToKabelListrik")
-}
-
-model BateraiAccu {
-  id             Int       @id @default(autoincrement())
-  accuBawahtanki Boolean
-  Posisiaccu     Boolean   // "Baik" atau "Tidak"
-  accuIsolator   Boolean 
-  bukanLogam     Boolean 
-
-
-  pemeriksaan       Pemeriksaan[]   @relation("PemeriksaanToBateraiAccu")
-}
-
 
 model Petugas {
-  id_petugas   Int           @id @default(autoincrement())
-  nomor_petugas String
-  nama_petugas String
-  pemeriksaan  Pemeriksaan[]
-
+  id_petugas    Int           @id @default(autoincrement())
+  nomor_petugas Int?          @unique
+  nama_petugas  String
+  userId        Int           // Field untuk menyimpan id user
+  user          User          @relation(fields: [userId], references: [id]) // Relasi dengan User
 }
 
-model Sopir {
-  id_sopir    Int           @id @default(autoincrement())
-  nama_sopir  String
-  nomer_LO    Int
-  pemeriksaan Pemeriksaan[]
-
+model Transportir {
+  id_sopir     Int           @id @default(autoincrement())
+  nama_sopir   String
+  nomer_LO     Int?
+  userId       Int           // Field untuk menyimpan id user
+  user         User          @relation(fields: [userId], references: [id]) // Relasi dengan User
 }
+
 model User {
-  id            Int      @id @default(autoincrement())
-  username      String   @unique
-  password      String
-  roleId        Int
-  role          Role     @relation(fields: [roleId], references: [id])
-  nama_perusahaan String  
-  perusahaan           Perusahaan[] 
+  id             Int           @id @default(autoincrement())
+  username       String        @unique
+  password       String
+  roleId         Int
+  role           Role          @relation(fields: [roleId], references: [id])
+  nama_perusahaan String
+  perusahaan     Perusahaan[]
+  sopir          Transportir[] 
+  pemeriksaan    Pemeriksaan[]      // Relasi satu ke banyak dengan Sopir
+
+  Petugas Petugas[]
 }
 
 model Role {
@@ -88,12 +71,10 @@ model Role {
 }
 
 model Perusahaan {
-  id_perusahaan   Int           @id @default(autoincrement())
-  id_user   Int     @unique  
+  id_perusahaan    Int           @id @default(autoincrement())
+  id_user          Int           @unique
   tanggal_cek_fisik String?
-  nomor_polisi    String?
-  nama_perusahaan String        
-  users    User?  @relation (fields: [id_user], references: [id])
-  pemeriksaan     Pemeriksaan[]
-        
+  nomor_polisi     String?
+  nama_perusahaan  String
+  users            User?         @relation(fields: [id_user], references: [id])
 }
