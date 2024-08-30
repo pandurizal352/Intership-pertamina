@@ -8,10 +8,9 @@ const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        // Periksa token JWT di localStorage saat komponen dimuat
-        const token = localStorage.getItem('token'); // Periksa token dengan kunci yang benar
-        setIsLoggedIn(!!token); // Update state isLoggedIn berdasarkan keberadaan token
-    }, []); // Hanya dijalankan saat komponen dimuat
+        const token = localStorage.getItem('token');
+        setIsLoggedIn(!!token);
+    }, []);
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -22,11 +21,10 @@ const Navbar = () => {
     };
 
     const handleLogout = () => {
-        // Hapus token dari localStorage saat logout
-        localStorage.removeItem('token');// Pastikan kunci token sesuai
+        localStorage.removeItem('token');
         localStorage.removeItem('user');
-        setIsLoggedIn(false); // Update state setelah logout
-        window.location.href = '/login'; // Redirect ke halaman login
+        setIsLoggedIn(false);
+        window.location.href = '/login';
     };
 
     return (
@@ -43,29 +41,26 @@ const Navbar = () => {
 
             {/* Links */}
             <div className={`flex-col md:flex md:flex-row items-center md:space-x-5 absolute md:static top-14 right-0 left-0 md:top-0 bg-white md:bg-transparent transition-all duration-300 ease-in-out ${isOpen ? 'flex' : 'hidden'}`}>
-            <Link to='/' className='text-gray-700 hover:text-blue-600 transition-colors duration-300 px-4 py-2 md:py-0'>Home</Link>
+                <Link to='/' className='text-gray-700 hover:text-blue-600 transition-colors duration-300 px-4 py-2 md:py-0'>Home</Link>
                 <Link to='#servis' className='text-gray-700 hover:text-blue-600 transition-colors duration-300 px-4 py-2 md:py-0'>Servis</Link>
                 <Link to='#kontak' className='text-gray-700 hover:text-blue-600 transition-colors duration-300 px-4 py-2 md:py-0'>Kontak</Link>
                 
-                
-                  {/* Tampilkan "Input data" hanya jika sudah login */}
-                  {isLoggedIn && (
-                   <Link to='/halaman1' className='text-gray-700 hover:text-blue-600 transition-colors duration-300 px-4 py-2 md:py-0'>Input data</Link>
+                {isLoggedIn && (
+                    <Link to='/halaman3' className='text-gray-700 hover:text-blue-600 transition-colors duration-300 px-4 py-2 md:py-0'>Input data</Link>
                 )}
-                {/* Tampilkan tombol login jika belum login */}
+
                 {!isLoggedIn ? (
                     <Link to='/login' className='py-2 px-5 text-[18px] font-bold text-white bg-indigo-500 rounded-full hover:bg-indigo-600 transition-colors duration-300 mx-4 md:mx-0'>Login</Link>
                 ) : (
-                    // Tampilkan ikon profil jika sudah login
                     <div className='relative'>
                         <FaUserCircle 
                             className='text-3xl text-blue-600 cursor-pointer'
                             onClick={toggleProfileMenu}
                         />
                         {isProfileOpen && (
-                            <div className='absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md'>
+                            <div className='absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md z-50'>
                                 <Link to='/ubah-password' className='block px-4 py-2 text-gray-700 hover:bg-gray-100'>Ubah Password</Link>
-                                <button onClick={handleLogout} className='block px-4 py-2 text-gray-700 hover:bg-gray-100'>Logout</button>
+                                <button onClick={handleLogout} className='block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left'>Logout</button>
                             </div>
                         )}
                     </div>

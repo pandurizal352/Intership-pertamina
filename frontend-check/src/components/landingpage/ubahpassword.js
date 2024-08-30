@@ -1,16 +1,52 @@
 import React, { useState } from 'react';
-
-import heroimg from '../../assets/roket.png';
+import heroimg from '../../assets/login1.jpeg';
 
 const Ubahpassword = ({ setUser }) => {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
 
     const ubahpassword = async (e) => {
         e.preventDefault();
         
-        // Add your logic for updating the password here.
+        if (newPassword !== confirmPassword) {
+            setError('Password baru dan konfirmasi password tidak cocok.');
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+
+            const userId = 1; // Update this with the actual user ID
+            const response = await fetch(`http://localhost:5000/user/${userId}/password`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+                },
+                body: JSON.stringify({
+                    oldPassword,
+                    newPassword,
+                }),
+            });
+
+            if (response.ok) {
+                // Handle success
+                setSuccess('Password berhasil diubah.');
+                setError('');
+            } else {
+                // Handle server errors
+                const data = await response.json();
+                setError(data.message || 'Terjadi kesalahan saat mengubah password.');
+                setSuccess('');
+            }
+        } catch (err) {
+            // Handle network errors
+            setError('Terjadi kesalahan saat mengubah password.');
+            setSuccess('');
+        }
     };
 
     return (
@@ -18,6 +54,8 @@ const Ubahpassword = ({ setUser }) => {
             {/* Left side: Form section */}
             <div className="flex-1 md:text-left space-y-6">
                 <form onSubmit={ubahpassword}>
+                    {error && <p className="text-red-500 mb-4">{error}</p>}
+                    {success && <p className="text-green-500 mb-4">{success}</p>}
                     <div className='mb-4'>
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="oldPassword">Password Lama:</label>
                         <input 

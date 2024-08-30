@@ -4,10 +4,14 @@ const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcrypt'); // Untuk hashing password
 require('dotenv').config();
 
+// MIddleware
+const authenticateJWT = require('../middleware/authenticateJWT');
+const authorizeRole = require('../middleware/authorizeRole');
+
 const prisma = new PrismaClient();
 
 // Create User
-router.post('/', async (req, res) => {
+router.post('/',authenticateJWT,  async (req, res) => {
   const { username, password, nama_perusahaan, roleId } = req.body;
 
   if (!username || !password || !roleId) {
@@ -35,7 +39,7 @@ router.post('/', async (req, res) => {
 });
 
 // Read Users
-router.get('/', async (req, res) => {
+router.get('/',authenticateJWT, async (req, res) => {
   try {
     const users = await prisma.user.findMany({
       include: {
@@ -83,7 +87,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Update Password
-router.put('/:id/password', async (req, res) => {
+router.put('/:id/password',authenticateJWT, async (req, res) => {
   const { id } = req.params;
   const { newPassword } = req.body;
 

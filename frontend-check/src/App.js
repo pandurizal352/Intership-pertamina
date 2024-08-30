@@ -61,19 +61,7 @@ function App() {
             element={
               <>
                 <Navbar />
-                <div style={{ position: 'relative', zIndex: -1, marginTop: '-1rem' }}>
-                  <svg
-                    style={{ width: '100%', height: 'auto' }}
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 1440 320"
-                  >
-                    <path
-                      fill="#ec000e"
-                      fillOpacity="1"
-                      d="M0,32L40,64C80,96,160,160,240,202.7C320,245,400,267,480,234.7C560,203,640,117,720,106.7C800,96,880,160,960,154.7C1040,149,1120,75,1200,69.3C1280,64,1360,128,1400,160L1440,192L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"
-                    ></path>
-                  </svg>
-                </div>
+               
                 <Hero />
                 <div id="servis">
                   <Servis />

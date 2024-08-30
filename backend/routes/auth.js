@@ -4,6 +4,9 @@ const jwt = require('jsonwebtoken');
 const { PrismaClient } = require('@prisma/client');
 require('dotenv').config();
 
+const authenticateJWT = require('../middleware/authenticateJWT');
+const authorizeRole = require('../middleware/authorizeRole');
+
 const prisma = new PrismaClient();
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;

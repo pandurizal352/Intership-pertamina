@@ -4,7 +4,8 @@ import { FaRegEdit, FaRegTrashAlt, FaInfoCircle } from 'react-icons/fa';
 import AddPemeriksa from './AddPemeriksa';// Pastikan jalur impor benar
 import ConfirmDeleteModal from './ConfirmDelete';
 import DetailModal from './Detail'; // Pastikan jalur impor benar
-
+import jsPDF from 'jspdf';
+import sampleImage from '../assets/pertamina-hitam-putih.png'
 
 import '../components/CRUD.css';
 
@@ -15,24 +16,38 @@ const Pemeriksaan = ({ userId }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [formData, setFormData] = useState({
-    userId: userId || '',
-    tanggal_pemeriksaan: '',
-    jenis_pemeriksaan: '',
-    penjelasan: '',
-    keterangan: '',
-    status: '',
+    Batteraiaccu1: false,
+    Batteraiaccu2: false,
+    Batteraiaccu3: false,
+    Batteraiaccu4: false,
+    Nama_perusahaan: '',
+    verifikasi: '',
     foto: '',
-    safety_switch: false,
+   
     kabellistrik1: false,
     kabellistrik2: false,
     kabellistrik3: false,
     kabellistrik4: false,
     kabellistrik5: false,
-    Batteraiaccu1: false,
-    Batteraiaccu2: false,
-    Batteraiaccu3: false,
-    Batteraiaccu4: false,
-    Verifikasi: '',
+    kapasitas_tangki: '',
+    masa_berlakukeur: '',
+    masa_berlakupajak: '',
+    masa_berlakustnk: '',
+    masa_berlakutera: '',
+    nomor_polisi: '',
+   
+    safety_switch: false,
+    sim_Amt1: '',
+    sim_Amt2: '',
+    t2_belakang: '',
+    t2_depan: '',
+    t2_tengah1: '',
+    t2_tengah2: '',
+    tanggal_pemeriksaan: '',
+    temuan: '',
+    umur_tangki: '',
+    userId: userId || '',
+    
   });
   
   const [pemeriksaanData, setPemeriksaanData] = useState([]);
@@ -68,9 +83,97 @@ const [selectedDetail, setSelectedDetail] = useState(null);
   };
 
   const handlePdfExport = () => {
-    console.log('PDF Export');
-    // Implementasikan logika ekspor PDF di sini
+    // Base64 string dari gambar logo Pertamina
+    const logoBase64 = ''; 
+  
+    const pdf = new jsPDF('p', 'mm', 'a4');
+  
+    // Ukuran halaman A4: 210mm x 297mm
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    // const pageHeight = pdf.internal.pageSize.getHeight();
+  
+    // Set margins
+    const marginTop = 20;
+  
+    // Ukuran kolom
+    const columnWidths = [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]; // Adjust column widths
+    const totalTableWidth = columnWidths.reduce((acc, width) => acc + width, 0);
+  
+    // Hitung posisi margin kiri agar tabel berada di tengah halaman
+    const marginLeft = (pageWidth - totalTableWidth) / 2;
+  
+    // Add Pertamina logo at the top-left
+    pdf.addImage(sampleImage, 'PNG', marginLeft, marginTop, 50, 20); // Adjust size and position as needed
+  
+    // Add title text next to the logo
+    pdf.setFontSize(18);
+    pdf.text('DATA PEMERIKSAAN', marginLeft + 60, marginTop + 20);
+    pdf.setFontSize(11);
+  
+    // Move down to start the table
+    pdf.setFontSize(12);
+  
+    // Calculate table starting point
+    const tableTop = marginTop + 35;
+  
+    // Add table headers
+    const headers = ['Tanggal Pemeriksaan', 'Nama Perusahaan', 'Kapasitas Tangki', 'Nomor Polisi', 'Masa Berlaku STNK', 'Masa Berlaku Pajak', 'SIM AMT 1', 'SIM AMT 2', 'Masa Berlaku Tera', 'T2 Depan', 'T2 Tengah 1', 'T2 Tengah 2', 'T2 Belakang', 'Masa Berlaku KEUR', 'Umur Tangki', 'Safety Switch', 'Kabel Listrik 1', 'Kabel Listrik 2', 'Kabel Listrik 3', 'Kabel Listrik 4', 'Kabel Listrik 5', 'Baterai Accu 1', 'Baterai Accu 2', 'Baterai Accu 3', 'Baterai Accu 4', 'Temuan', 'Foto', 'Verifikasi'];
+    const rowHeight = 10;
+  
+    // Draw header background and add header text
+    pdf.setFillColor(220, 220, 220);
+    pdf.rect(marginLeft, tableTop, totalTableWidth, rowHeight, 'F');
+  
+    headers.forEach((header, i) => {
+      const headerX = marginLeft + (i * columnWidths[i]) + (columnWidths[i] / 2);
+      pdf.text(header, headerX, tableTop + 7, { align: 'center' });
+    });
+  
+    // Draw header bottom line
+    pdf.line(marginLeft, tableTop + rowHeight, marginLeft + totalTableWidth, tableTop + rowHeight);
+  
+    // Add table rows with centered text and border
+    let startY = tableTop + rowHeight;
+  
+    pemeriksaanData.forEach(pemeriksaan => {
+      pdf.text(pemeriksaan.tanggal_pemeriksaan, marginLeft + (columnWidths[0] / 2), startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.Nama_perusahaan, marginLeft + columnWidths[0] + (columnWidths[1] / 2), startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.kapasitas_tangki, marginLeft + columnWidths[0] + columnWidths[1] + (columnWidths[2] / 2), startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.nomor_polisi, marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + (columnWidths[3] / 2), startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.masa_berlakustnk, marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + (columnWidths[4] / 2), startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.masa_berlakupajak, marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + (columnWidths[5] / 2), startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.sim_Amt1, marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + (columnWidths[6] / 2), startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.sim_Amt2, marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + (columnWidths[7] / 2), startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.masa_berlakutera, marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + (columnWidths[8] / 2), startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.t2_depan, marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + (columnWidths[9] / 2), startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.t2_tengah1, marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + columnWidths[9] + (columnWidths[10] / 2), startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.t2_tengah2, marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + columnWidths[9] + columnWidths[10] + (columnWidths[11] / 2), startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.t2_belakang, marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + columnWidths[9] + columnWidths[10] + columnWidths[11] + (columnWidths[12] / 2), startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.masa_berlakukeur, marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + columnWidths[9] + columnWidths[10] + columnWidths[11] + columnWidths[12] + (columnWidths[13] / 2), startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.umur_tangki, marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + columnWidths[9] + columnWidths[10] + columnWidths[11] + columnWidths[12] + columnWidths[13] + (columnWidths[14] / 2), startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.safety_switch ? 'Yes' : 'No', marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + columnWidths[9] + columnWidths[10] + columnWidths[11] + columnWidths[12] + columnWidths[13] + columnWidths[14] + (columnWidths[15] / 2), startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.kabellistrik1 ? 'Yes' : 'No', marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + columnWidths[9] + columnWidths[10] + columnWidths[11] + columnWidths[12] + columnWidths[13] + columnWidths[14] + columnWidths[15] + (columnWidths[16] / 2), startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.kabellistrik2 ? 'Yes' : 'No', marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + columnWidths[9] + columnWidths[10] + columnWidths[11] + columnWidths[12] + columnWidths[13] + columnWidths[14] + columnWidths[15] + columnWidths[16] + columnWidths[17] / 2, startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.kabellistrik3 ? 'Yes' : 'No', marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + columnWidths[9] + columnWidths[10] + columnWidths[11] + columnWidths[12] + columnWidths[13] + columnWidths[14] + columnWidths[15] + columnWidths[16] + columnWidths[17] + columnWidths[18] / 2, startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.kabellistrik4 ? 'Yes' : 'No', marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + columnWidths[9] + columnWidths[10] + columnWidths[11] + columnWidths[12] + columnWidths[13] + columnWidths[14] + columnWidths[15] + columnWidths[16] + columnWidths[17] + columnWidths[18] + columnWidths[19] / 2, startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.kabellistrik5 ? 'Yes' : 'No', marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + columnWidths[9] + columnWidths[10] + columnWidths[11] + columnWidths[12] + columnWidths[13] + columnWidths[14] + columnWidths[15] + columnWidths[16] + columnWidths[17] + columnWidths[18] + columnWidths[19] + columnWidths[20] / 2, startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.Batteraiaccu1 ? 'Yes' : 'No', marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + columnWidths[9] + columnWidths[10] + columnWidths[11] + columnWidths[12] + columnWidths[13] + columnWidths[14] + columnWidths[15] + columnWidths[16] + columnWidths[17] + columnWidths[18] + columnWidths[19] + columnWidths[20] + columnWidths[21] / 2, startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.Batteraiaccu2 ? 'Yes' : 'No', marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + columnWidths[9] + columnWidths[10] + columnWidths[11] + columnWidths[12] + columnWidths[13] + columnWidths[14] + columnWidths[15] + columnWidths[16] + columnWidths[17] + columnWidths[18] + columnWidths[19] + columnWidths[20] + columnWidths[21] + columnWidths[22] / 2, startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.Batteraiaccu3 ? 'Yes' : 'No', marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + columnWidths[9] + columnWidths[10] + columnWidths[11] + columnWidths[12] + columnWidths[13] + columnWidths[14] + columnWidths[15] + columnWidths[16] + columnWidths[17] + columnWidths[18] + columnWidths[19] + columnWidths[20] + columnWidths[21] + columnWidths[22] + columnWidths[23] / 2, startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.Batteraiaccu4 ? 'Yes' : 'No', marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + columnWidths[9] + columnWidths[10] + columnWidths[11] + columnWidths[12] + columnWidths[13] + columnWidths[14] + columnWidths[15] + columnWidths[16] + columnWidths[17] + columnWidths[18] + columnWidths[19] + columnWidths[20] + columnWidths[21] + columnWidths[22] + columnWidths[23] + columnWidths[24] / 2, startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.temuan, marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + columnWidths[9] + columnWidths[10] + columnWidths[11] + columnWidths[12] + columnWidths[13] + columnWidths[14] + columnWidths[15] + columnWidths[16] + columnWidths[17] + columnWidths[18] + columnWidths[19] + columnWidths[20] + columnWidths[21] + columnWidths[22] + columnWidths[23] + columnWidths[24] + columnWidths[25] / 2, startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.foto, marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + columnWidths[9] + columnWidths[10] + columnWidths[11] + columnWidths[12] + columnWidths[13] + columnWidths[14] + columnWidths[15] + columnWidths[16] + columnWidths[17] + columnWidths[18] + columnWidths[19] + columnWidths[20] + columnWidths[21] + columnWidths[22] + columnWidths[23] + columnWidths[24] + columnWidths[25] + (columnWidths[26] / 2), startY + 7, { align: 'center' });
+      pdf.text(pemeriksaan.Verifikasi ? pemeriksaan.Verifikasi : '', marginLeft + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3] + columnWidths[4] + columnWidths[5] + columnWidths[6] + columnWidths[7] + columnWidths[8] + columnWidths[9] + columnWidths[10] + columnWidths[11] + columnWidths[12] + columnWidths[13] + columnWidths[14] + columnWidths[15] + columnWidths[16] + columnWidths[17] + columnWidths[18] + columnWidths[19] + columnWidths[20] + columnWidths[21] + columnWidths[22] + columnWidths[23] + columnWidths[24] + columnWidths[25] + columnWidths[26] / 2, startY + 7, { align: 'center' });
+  
+      startY += rowHeight;
+    });
+  
+    // Finalize and save the PDF
+    pdf.save('pemeriksaan.pdf');
   };
+  
+ 
+  
 
   const handleExcelExport = () => {
     console.log('Excel Export');
@@ -125,24 +228,38 @@ const [selectedDetail, setSelectedDetail] = useState(null);
   const openModal = () => {
     if (!formData.id_pemeriksaan) {
       setFormData({
-        userId,
-        tanggal_pemeriksaan: '',
-        jenis_pemeriksaan: '',
-        penjelasan: '',
-        keterangan: '',
-        status: '',
-        foto: '',
-        safety_switch: false,
-        kabellistrik1: false,
-        kabellistrik2: false,
-        kabellistrik3: false,
-        kabellistrik4: false,
-        kabellistrik5: false,
         Batteraiaccu1: false,
-        Batteraiaccu2: false,
-        Batteraiaccu3: false,
-        Batteraiaccu4: false,
-        Verifikasi: '',
+Batteraiaccu2: false,
+Batteraiaccu3: false,
+Batteraiaccu4: false,
+Nama_perusahaan: '',
+verifikasi: '',
+foto: '',
+
+kabellistrik1: false,
+kabellistrik2: false,
+kabellistrik3: false,
+kabellistrik4: false,
+kabellistrik5: false,
+kapasitas_tangki: '',
+masa_berlakukeur: '',
+masa_berlakupajak: '',
+masa_berlakustnk: '',
+masa_berlakutera: '',
+nomor_polisi: '',
+
+safety_switch: false,
+sim_Amt1: '',
+sim_Amt2: '',
+t2_belakang: '',
+t2_depan: '',
+t2_tengah1: '',
+t2_tengah2: '',
+tanggal_pemeriksaan: '',
+temuan: '',
+umur_tangki: '',
+userId
+
       });
     }
     setModalIsOpen(true);
@@ -151,24 +268,38 @@ const [selectedDetail, setSelectedDetail] = useState(null);
   const closeModal = () => {
     // Reset form data
     setFormData({
-      userId,
-      tanggal_pemeriksaan: '',
-      jenis_pemeriksaan: '',
-      penjelasan: '',
-      keterangan: '',
-      status: '',
-      foto: '',
-      safety_switch: false,
-      kabellistrik1: false,
-      kabellistrik2: false,
-      kabellistrik3: false,
-      kabellistrik4: false,
-      kabellistrik5: false,
       Batteraiaccu1: false,
-      Batteraiaccu2: false,
-      Batteraiaccu3: false,
-      Batteraiaccu4: false,
-      Verifikasi: '',
+Batteraiaccu2: false,
+Batteraiaccu3: false,
+Batteraiaccu4: false,
+Nama_perusahaan: '',
+verifikasi: '',
+foto: '',
+
+kabellistrik1: false,
+kabellistrik2: false,
+kabellistrik3: false,
+kabellistrik4: false,
+kabellistrik5: false,
+kapasitas_tangki: '',
+masa_berlakukeur: '',
+masa_berlakupajak: '',
+masa_berlakustnk: '',
+masa_berlakutera: '',
+nomor_polisi: '',
+
+safety_switch: false,
+sim_Amt1: '',
+sim_Amt2: '',
+t2_belakang: '',
+t2_depan: '',
+t2_tengah1: '',
+t2_tengah2: '',
+tanggal_pemeriksaan: '',
+temuan: '',
+umur_tangki: '',
+userId
+
     });
   
     // Tutup modal
@@ -207,24 +338,38 @@ const [selectedDetail, setSelectedDetail] = useState(null);
   
         // Reset formData after successful submission
         setFormData({
-          userId,
-          tanggal_pemeriksaan: '',
-          jenis_pemeriksaan: '',
-          penjelasan: '',
-          keterangan: '',
-          status: '',
+          Batteraiaccu1: false,
+          Batteraiaccu2: false,
+          Batteraiaccu3: false,
+          Batteraiaccu4: false,
+          Nama_perusahaan: '',
+          verifikasi: '',
           foto: '',
-          safety_switch: false,
+         
           kabellistrik1: false,
           kabellistrik2: false,
           kabellistrik3: false,
           kabellistrik4: false,
           kabellistrik5: false,
-          Batteraiaccu1: false,
-          Batteraiaccu2: false,
-          Batteraiaccu3: false,
-          Batteraiaccu4: false,
-          Verifikasi: '',
+          kapasitas_tangki: '',
+          masa_berlakukeur: '',
+          masa_berlakupajak: '',
+          masa_berlakustnk: '',
+          masa_berlakutera: '',
+          nomor_polisi: '',
+         
+          safety_switch: false,
+          sim_Amt1: '',
+          sim_Amt2: '',
+          t2_belakang: '',
+          t2_depan: '',
+          t2_tengah1: '',
+          t2_tengah2: '',
+          tanggal_pemeriksaan: '',
+          temuan: '',
+          umur_tangki: '',
+          userId: userId || '',
+          
         });
   
         closeModal();
@@ -281,9 +426,9 @@ const [selectedDetail, setSelectedDetail] = useState(null);
          
             <th>Tanggal Pemeriksaan</th>
             <th>Jenis Pemeriksaan</th>
-            <th>Penjelasan</th>
-            <th>Keterangan</th>
-            <th>Status</th>
+            <th>Nama perusahaan</th>
+            <th>Temuan</th>
+            <th>status</th>
             <th>Foto</th>
             <th>Verifikasi</th>
             <th>Action</th>

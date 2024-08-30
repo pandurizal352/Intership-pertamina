@@ -54,13 +54,12 @@ const AddPemeriksa = ({ isOpen, onRequestClose, formData, onChange, onSubmit }) 
     >
       <h2>Tambah Data Pemeriksaan</h2>
       <form onSubmit={onSubmit}>
-      <input
+        <input
           type="text"
           name="userId"
-          value={localFormData.userId}
-          readOnly
+          value={localFormData.userId || ''}
+          onChange={handleChange}
           className="input-field"
-         
         />
         <input
           type="date"
@@ -70,47 +69,127 @@ const AddPemeriksa = ({ isOpen, onRequestClose, formData, onChange, onSubmit }) 
           onChange={handleChange}
           className="input-field"
         />
-        
         <input
           type="text"
-          name="jenis_pemeriksaan"
-          placeholder="Jenis Pemeriksaan"
-          value={localFormData.jenis_pemeriksaan || ''}
+          name="Nama_perusahaan"
+          placeholder="Nama Perusahaan"
+          value={localFormData.Nama_perusahaan || ''}
           onChange={handleChange}
           className="input-field"
         />
         <input
           type="text"
-          name="penjelasan"
-          placeholder="Penjelasan"
-          value={localFormData.penjelasan || ''}
+          name="kapasitas_tangki"
+          placeholder="Kapasitas Tangki"
+          value={localFormData.kapasitas_tangki || ''}
           onChange={handleChange}
           className="input-field"
         />
         <input
           type="text"
-          name="keterangan"
-          placeholder="Keterangan"
-          value={localFormData.keterangan || ''}
+          name="nomor_polisi"
+          placeholder="Nomor Polisi"
+          value={localFormData.nomor_polisi || ''}
           onChange={handleChange}
           className="input-field"
         />
         <input
           type="text"
-          name="status"
-          placeholder="Status"
-          value={localFormData.status || ''}
+          name="masa_berlakustnk"
+          placeholder="Masa Berlaku STNK"
+          value={localFormData.masa_berlakustnk || ''}
           onChange={handleChange}
           className="input-field"
         />
         <input
           type="text"
-          name="foto"
-          placeholder="Foto URL"
-          value={localFormData.foto || ''}
+          name="masa_berlakupajak"
+          placeholder="Masa Berlaku Pajak"
+          value={localFormData.masa_berlakupajak || ''}
           onChange={handleChange}
           className="input-field"
         />
+        <input
+          type="text"
+          name="sim_Amt1"
+          placeholder="SIM AMT 1"
+          value={localFormData.sim_Amt1 || ''}
+          onChange={handleChange}
+          className="input-field"
+        />
+        <input
+          type="text"
+          name="sim_Amt2"
+          placeholder="SIM AMT 2"
+          value={localFormData.sim_Amt2 || ''}
+          onChange={handleChange}
+          className="input-field"
+        />
+        <input
+          type="text"
+          name="masa_berlakutera"
+          placeholder="Masa Berlaku Tera"
+          value={localFormData.masa_berlakutera || ''}
+          onChange={handleChange}
+          className="input-field"
+        />
+        <input
+          type="text"
+          name="t2_depan"
+          placeholder="T2 Depan"
+          value={localFormData.t2_depan || ''}
+          onChange={handleChange}
+          className="input-field"
+        />
+        <input
+          type="text"
+          name="t2_tengah1"
+          placeholder="T2 Tengah 1"
+          value={localFormData.t2_tengah1 || ''}
+          onChange={handleChange}
+          className="input-field"
+        />
+        <input
+          type="text"
+          name="t2_tengah2"
+          placeholder="T2 Tengah 2"
+          value={localFormData.t2_tengah2 || ''}
+          onChange={handleChange}
+          className="input-field"
+        />
+        <input
+          type="text"
+          name="t2_belakang"
+          placeholder="T2 Belakang"
+          value={localFormData.t2_belakang || ''}
+          onChange={handleChange}
+          className="input-field"
+        />
+        <input
+          type="text"
+          name="masa_berlakukeur"
+          placeholder="Masa Berlaku Keur"
+          value={localFormData.masa_berlakukeur || ''}
+          onChange={handleChange}
+          className="input-field"
+        />
+        <input
+          type="text"
+          name="umur_tangki"
+          placeholder="Umur Tangki"
+          value={localFormData.umur_tangki || ''}
+          onChange={handleChange}
+          className="input-field"
+        />
+        <input
+          type="text"
+          name="temuan"
+          placeholder="Temuan"
+          value={localFormData.temuan || ''}
+          onChange={handleChange}
+          className="input-field"
+        />
+       
 
         {Object.keys(labelMapping).map((item) => (
           <div key={item} className="checkbox-group">
@@ -140,10 +219,10 @@ const AddPemeriksa = ({ isOpen, onRequestClose, formData, onChange, onSubmit }) 
           </div>
         ))}
 
-      <input
+        <input
           type="text"
           name="verifikasi"
-          placeholder="verifikasi"
+          placeholder="Verifikasi"
           value={localFormData.verifikasi || ''}
           onChange={handleChange}
           className="input-field"

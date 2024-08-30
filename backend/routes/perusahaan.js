@@ -3,18 +3,24 @@ const { PrismaClient } = require('@prisma/client');
 const router = express.Router();
 const prisma = new PrismaClient();
 
+// MIddleware
+const authenticateJWT = require('../middleware/authenticateJWT');
+const authorizeRole = require('../middleware/authorizeRole');
+
+
 // Tambah data Perusahaan
-router.post('/', async (req, res) => {
+router.post('/',authenticateJWT, async (req, res) => {
   const { tanggal_cek_fisik,
     nomor_polisi,
-    nama_perusahaan } = req.body;
+    nama_perusahaan, id_user } = req.body;
 
   try {
     const newPerusahaan = await prisma.perusahaan.create({
       data: {
         tanggal_cek_fisik,
         nomor_polisi,
-        nama_perusahaan
+        nama_perusahaan,
+        id_user
       }
     });
     res.json(newPerusahaan);
@@ -25,7 +31,7 @@ router.post('/', async (req, res) => {
 });
 
 // Ambil semua data perusahaan
-router.get('/', async (req, res) => {
+router.get('/',authenticateJWT, async (req, res) => {
   try {
     const perusahaan = await prisma.perusahaan.findMany();
     res.json(perusahaan);
@@ -35,7 +41,7 @@ router.get('/', async (req, res) => {
 });
 
 // Ambil detail perusahaan berdasarkan ID
-router.get('/:id', async (req, res) => {
+router.get('/:id',authenticateJWT, async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -53,7 +59,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Edit data perusahaan
-router.put('/:id', async (req, res) => {
+router.put('/:id',authenticateJWT, async (req, res) => {
   const { id } = req.params;
   const {  tanggal_cek_fisik,
     nomor_polisi,
@@ -75,7 +81,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Hapus data perusahaan
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',authenticateJWT, async (req, res) => {
   const { id } = req.params;
 
   try {

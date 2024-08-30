@@ -13,22 +13,33 @@ datasource db {
 model Pemeriksaan {
   id_pemeriksaan     Int        @id @default(autoincrement())
   userId        Int           // Field untuk menyimpan id user
-  tanggal_pemeriksaan String
-  jenis_pemeriksaan  String
-  penjelasan         String
-  keterangan         String
-  status             String
-  foto               String
-  safety_switch Boolean
-  kabellistrik1 Boolean
-  kabellistrik2 Boolean
-  kabellistrik3 Boolean
-  kabellistrik4 Boolean
-  kabellistrik5 Boolean
-  Batteraiaccu1 Boolean
-  Batteraiaccu2 Boolean
-  Batteraiaccu3 Boolean
-  Batteraiaccu4 Boolean
+  tanggal_pemeriksaan String?
+  nama_perusahaan  String?
+  kapasitas_tangki String?
+  nomor_polisi     String?
+  masa_berlakustnk String?
+  masa_berlakupajak String?
+  sim_Amt1          String?
+  sim_Amt2          String?
+  masa_berlakutera   String?
+  t2_depan   String?
+  t2_tengah1   String?
+  t2_tengah2   String?
+  t2_belakang   String?
+  masa_berlakukeur   String?
+  umur_tangki   String?
+  safety_switch Boolean?
+  kabellistrik1 Boolean?
+  kabellistrik2 Boolean?
+  kabellistrik3 Boolean?
+  kabellistrik4 Boolean?
+  kabellistrik5 Boolean?
+  Batteraiaccu1 Boolean?
+  Batteraiaccu2 Boolean?
+  Batteraiaccu3 Boolean?
+  Batteraiaccu4 Boolean?
+  temuan  String?
+  foto String?
   Verifikasi String?
 
   user          User          @relation(fields: [userId], references: [id]) 

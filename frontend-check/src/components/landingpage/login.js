@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import heroimg from '../../assets/roket.png';
+import heroimg from '../../assets/login1.jpeg';
 
 const Login = ({ setUser }) => {
     const [username, setUsername] = useState('');
@@ -92,7 +92,7 @@ const Login = ({ setUser }) => {
             </div>
 
             {/* Right side: Image section */}
-            <div className="flex-1 flex justify-center items-center">
+            <div className="flex-2 flex justify-center items-center">
                 <img 
                     src={heroimg} 
                     alt="Login" 

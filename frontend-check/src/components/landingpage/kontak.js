@@ -15,15 +15,17 @@ import img9 from '../../assets/ma.jpeg';
 
 const Kontak = () => {
     const contacts = [
+        { role: "INTERGRATED TERMINAL MANAGER", name: "SUPRIYONO AGUNG NUGROHO", imgSrc: img9 },
+        { role: "LEAD OPR. FUEL DIST", name: "AHMAD RIZAL EFENDI", imgSrc: img5 },
         { role: "SPV. REC. STRG. & DIST", name: "MUZAWIR", imgSrc: img7 },
-        { role: "JR. SPV. HSSE & FLEET SAFETY", name: "THOMAS AGUNG SP", imgSrc: img6 },
         { role: "SPV. MAINT. PLAN & SERVICE", name: "ABDULLAH BUSTAN", imgSrc: img3 },
+        { role: "JR. SPV. HSSE & FLEET SAFETY", name: "THOMAS AGUNG SP", imgSrc: img6 },     
         { role: "JR. SPV. SALES SERVICE & GA", name: "MOHAMAD AMHAR", imgSrc: img4 },
         { role: "JR. SPV. FUEL DIST", name: "ACHMAD RIFQI R.", imgSrc: img1 },
         { role: "JR. SPV. REC. & STRG.", name: "SENDI MUH. JULIANTO", imgSrc: img2 },
         { role: "JR. SPV. REC. & STRG.", name: "SUDIN", imgSrc: img8 },
-        { role: "LEAD OPR. FUEL DIST", name: "AHMAD RIZAL EFENDI", imgSrc: img5 },
-        { role: "INTERGRATED TERMINAL MANAGER", name: "SUPRIYONO AGUNG NUGROHO", imgSrc: img9 },
+       
+       
     ];
 
     return (

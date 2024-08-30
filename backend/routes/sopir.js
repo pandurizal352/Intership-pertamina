@@ -3,43 +3,49 @@ const { PrismaClient } = require('@prisma/client');
 const router = express.Router();
 const prisma = new PrismaClient();
 
-// Tambah data sopir
-router.post('/', async (req, res) => {
-  const { nama_sopir, nomer_LO } = req.body;
+// MIddleware
+const authenticateJWT = require('../middleware/authenticateJWT');
+const authorizeRole = require('../middleware/authorizeRole');
+
+
+// Tambah data transportir
+router.post('/',authenticateJWT, async (req, res) => {
+  const { nama_sopir, nomer_LO, userId } = req.body;
 
   try {
-    const newSopir = await prisma.sopir.create({
+    const newtransportir = await prisma.transportir.create({
       data: {
         nama_sopir,
-        nomer_LO
+        nomer_LO,
+        userId
       }
     });
-    res.json(newSopir);
+    res.json(newtransportir);
   } catch (error) {
     console.error('Error adding data:', error);
     res.status(500).json({ error: 'Error adding data', details: error.message });
   }
 });
 
-// Ambil semua data sopir
-router.get('/', async (req, res) => {
+// Ambil semua data transportir
+router.get('/',authenticateJWT, async (req, res) => {
   try {
-    const sopir = await prisma.sopir.findMany();
-    res.json(sopir);
+    const transportir = await prisma.transportir.findMany();
+    res.json(transportir);
   } catch (error) {
     res.status(500).json({ error: 'Error fetching data' });
   }
 });
 
-// Ambil detail sopir berdasarkan ID
-router.get('/search', async (req, res) => {
+// Ambil detail transportir berdasarkan ID
+router.get('/search',authenticateJWT, async (req, res) => {
   const { nama } = req.query; // Mengambil parameter query 'nama'
 
   try {
-    console.log(`Mencari sopir dengan nama: ${nama}`);
+    console.log(`Mencari transportir dengan nama: ${nama}`);
 
-    // Mencari sopir yang sesuai dengan nama yang diberikan
-    const sopir = await prisma.sopir.findMany({
+    // Mencari transportir yang sesuai dengan nama yang diberikan
+    const transportir = await prisma.transportir.findMany({
       where: {
         nama_sopir: {
           contains: nama // Menggunakan 'contains' untuk pencarian yang lebih fleksibel
@@ -47,10 +53,10 @@ router.get('/search', async (req, res) => {
       }
     });
 
-    if (sopir.length > 0) {
-      res.json(sopir); // Mengembalikan daftar sopir yang sesuai
+    if (transportir.length > 0) {
+      res.json(transportir); // Mengembalikan daftar transportir yang sesuai
     } else {
-      res.status(404).json({ error: 'Sopir not found' });
+      res.status(404).json({ error: 'transportir not found' });
     }
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -58,34 +64,46 @@ router.get('/search', async (req, res) => {
   }
 });
 
-// Edit data sopir
-router.put('/:id', async (req, res) => {
+// Edit data transportir
+router.put('/:id',authenticateJWT, async (req, res) => {
   const { id } = req.params;
-  const { nama_sopir, nomer_LO } = req.body;
+  const { nomer_LO, userId } = req.body;
 
   try {
-    const updatedSopir = await prisma.sopir.update({
+    // Cari user berdasarkan userId untuk mendapatkan nama_sopir
+    const user = await prisma.user.findUnique({
+      where: { id: Number(userId) },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Update hanya nomer_LO berdasarkan id_transportir
+    const updatedTransportir = await prisma.transportir.update({
       where: { id_sopir: Number(id) },
       data: {
-        nama_sopir,
-        nomer_LO
-      }
+        nomer_LO,
+        nama_sopir: user.username,  // Gunakan nama dari user
+      },
     });
-    res.json(updatedSopir);
+
+    res.json(updatedTransportir);
   } catch (error) {
-    res.status(500).json({ error: 'Error updating data' });
+    console.error(error);
+    res.status(500).json({ error: 'Error updating data', details: error.message });
   }
 });
 
-// Hapus data sopir
-router.delete('/:id', async (req, res) => {
+// Hapus data transportir
+router.delete('/:id',authenticateJWT, async (req, res) => {
   const { id } = req.params;
 
   try {
-    const deletedSopir = await prisma.sopir.delete({
+    const deletedtransportir = await prisma.transportir.delete({
       where: { id_sopir: Number(id) }
     });
-    res.json(deletedSopir);
+    res.json(deletedtransportir);
   } catch (error) {
     res.status(500).json({ error: 'Error deleting data' });
   }

@@ -1,6 +1,6 @@
 /* HalamanPemeriksaan.css */
 
-.container {
+.pemeriksaan-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,7 +10,7 @@
     background-color: #f7fafc;
   }
   
-  .form-container {
+  .pemeriksaan-form-container {
     width: 100%;
     max-width: 800px; /* Menambah lebar form agar lebih luas */
     padding: 2rem; /* Menambah padding agar form lebih lapang */
@@ -21,7 +21,7 @@
     box-sizing: border-box; /* Memastikan padding dan border termasuk dalam total width */
   }
   
-  .title {
+  .pemeriksaan-title {
     font-size: 1.75rem; /* Menambah ukuran font judul */
     font-weight: bold;
     color: #2d3748;

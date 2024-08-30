@@ -6,13 +6,14 @@ const prisma = new PrismaClient();
 // Tambah data petugas
 router.post('/', async (req, res) => {
   const { nomor_petugas,
-    nama_petugas } = req.body;
+    nama_petugas, userId } = req.body;
 
   try {
     const newPetugas = await prisma.petugas.create({
       data: {
         nomor_petugas,
-        nama_petugas
+        nama_petugas,
+        userId
       }
     });
     res.json(newPetugas);

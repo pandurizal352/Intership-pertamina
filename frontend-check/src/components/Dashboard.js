@@ -10,9 +10,19 @@ const Dashboard = ({ toggleSidebar, isSidebarOpen }) => {
   useEffect(() => {
     const fetchDataCounts = async () => {
       try {
-        const perusahaanResponse = await fetch('http://localhost:5000/perusahaan');
-        const petugasResponse = await fetch('http://localhost:5000/petugas');
-        const sopirResponse = await fetch('http://localhost:5000/sopir');
+        // Ambil token dari localStorage
+        const token = localStorage.getItem('token');
+
+        // Opsi untuk fetch termasuk header Authorization
+        const requestOptions = {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        };
+
+        const perusahaanResponse = await fetch('http://localhost:5000/perusahaan', requestOptions);
+        const petugasResponse = await fetch('http://localhost:5000/petugas', requestOptions);
+        const sopirResponse = await fetch('http://localhost:5000/sopir', requestOptions);
 
         if (!perusahaanResponse.ok || !petugasResponse.ok || !sopirResponse.ok) {
           throw new Error('Network response was not ok');

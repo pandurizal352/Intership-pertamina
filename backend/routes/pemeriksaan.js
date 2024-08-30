@@ -6,18 +6,57 @@ const prisma = new PrismaClient(); // Buat instance baru PrismaClient
 
 // Create Pemeriksaan
 router.post('/', async (req, res) => {
-  const {userId, tanggal_pemeriksaan, jenis_pemeriksaan, penjelasan, keterangan, status, foto, safety_switch, kabellistrik1, kabellistrik2, kabellistrik3, kabellistrik4, kabellistrik5, Batteraiaccu1, Batteraiaccu2, Batteraiaccu3, Batteraiaccu4,Verifikasi } = req.body;
+  const {
+    userId,
+    tanggal_pemeriksaan,
+    nama_perusahaan,
+    kapasitas_tangki,
+    nomor_polisi,
+    masa_berlakustnk,
+    masa_berlakupajak,
+    sim_Amt1,
+    sim_Amt2,
+    masa_berlakutera,
+    t2_depan,
+    t2_tengah1,
+    t2_tengah2,
+    t2_belakang,
+    masa_berlakukeur,
+    umur_tangki,
+    safety_switch,
+    kabellistrik1,
+    kabellistrik2,
+    kabellistrik3,
+    kabellistrik4,
+    kabellistrik5,
+    Batteraiaccu1,
+    Batteraiaccu2,
+    Batteraiaccu3,
+    Batteraiaccu4,
+    temuan,
+ 
+    Verifikasi
+  } = req.body;
 
   try {
     const pemeriksaan = await prisma.pemeriksaan.create({
       data: {
         userId,
         tanggal_pemeriksaan,
-        jenis_pemeriksaan,
-        penjelasan,
-        keterangan,
-        status,
-        foto,
+        nama_perusahaan,
+        kapasitas_tangki,
+        nomor_polisi,
+        masa_berlakustnk,
+        masa_berlakupajak,
+        sim_Amt1,
+        sim_Amt2,
+        masa_berlakutera,
+        t2_depan,
+        t2_tengah1,
+        t2_tengah2,
+        t2_belakang,
+        masa_berlakukeur,
+        umur_tangki,
         safety_switch,
         kabellistrik1,
         kabellistrik2,
@@ -28,6 +67,8 @@ router.post('/', async (req, res) => {
         Batteraiaccu2,
         Batteraiaccu3,
         Batteraiaccu4,
+        temuan,
+     
         Verifikasi,
       },
     });
@@ -88,7 +129,7 @@ router.delete('/:id', async (req, res) => {
     const pemeriksaan = await prisma.pemeriksaan.delete({
       where: { id_pemeriksaan: parseInt(id) },
     });
-    res.status(200).json({ message: 'Pemeriksaan deleted successfully' });
+    res.status(200).json({ message: 'Pemeriksaan berhasi dihapus' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
